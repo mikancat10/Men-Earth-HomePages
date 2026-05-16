@@ -1,0 +1,341 @@
+<html lang="ja" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>MenEarth S3. | Interactive Edition</title>
+    <meta name="description" content="麺アースは、マイクラでのサーバーであり世界マップの中で様々な国が作れます">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp?size=100">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;500&family=Nunito:wght@300&family=Source+Code+Pro:wght@400&display=swap');
+
+        :root {
+            --white: #fff;
+            --black: #000;
+            --grey: #efefef;
+            --dark-grey: #111;
+            --accent: #555;
+        }
+
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --white: #000;
+                --grey: #111;
+                --black: #fff;
+                --accent: #888;
+            }
+        }
+
+        * {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--grey);
+            color: var(--black);
+            overflow-x: hidden;
+        }
+
+        /* --- UI Components --- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgba(57, 57, 57, 0.85);
+            border-bottom: 1px solid #a7a7a7;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 9999;
+        }
+
+#logo {
+    height: 30px; /* 少し大きくすると見やすいです */
+    width: 30px;
+    background-image: url('https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* アイコンを丸く切り抜く場合 */
+    margin-right: 12px;
+    mask: none; /* 前のマスク設定を解除 */
+    -webkit-mask: none;
+}
+
+        header h1 { font-size: 18px; font-weight: 100; letter-spacing: 2px; }
+
+        main { margin-top: 50px; }
+
+        /* --- Sections --- */
+        #top {
+            height: calc(100vh - 50px);
+            display: flex;
+            flex-direction: column;
+            background-color: var(--white);
+            text-align: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; }
+
+        .btn {
+            display: inline-block;
+            color: var(--white);
+            background-color: var(--black);
+            margin: 15px 5px;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover { transform: scale(1.05); opacity: 0.8; }
+
+        /* --- Interactive Feature Section --- */
+        #details {
+            padding: 80px 10%;
+            background-color: var(--white);
+        }
+
+        .feature-container {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .feature-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        
+        .nav-item {
+            padding: 20px;
+            border: 1px solid var(--accent);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: transparent;
+            color: var(--black);
+        }
+
+        .nav-item:hover { transform: translateX(10px); }
+        .nav-item.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+        .feature-display {
+            flex: 2;
+            background: var(--grey);
+            padding: 50px;
+            border-radius: 30px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- Grid Section --- */
+        #more { padding: 80px 10%; background-color: var(--grey); }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .grid-box {
+            background: var(--white);
+            padding: 40px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .list-box {
+            background: var(--white);
+            margin-bottom: 10px;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* --- Animations --- */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer { padding: 40px; text-align: center; font-size: 12px; border-top: 1px solid #ccc; }
+
+        @media (max-width: 768px) {
+            .feature-container { flex-direction: column; }
+            #grid-container { grid-template-columns: 1fr; }
+        }
+
+                .section-flex {
+            display: flex;
+            height: 80vh;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        .section-flex > div {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div id="logo"></div>
+        <h1>MENEARTH</h1>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="top">
+            <div id="top-text-content">
+                <h1>MenEarth</h1>
+                <h4 style="color: #888;">Created by: Mikancat10.</h4>
+                <h3 style="font-size: 4vmin; margin-top: 20px;">マイクラサーバー内での国家建設と麺の融合</h3>
+                <div style="margin-top: 30px;">
+                    <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
+                    <a href="#details" class="btn" style="background: transparent; color: var(--black); border: 1px solid var(--black);">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+                <section class="section-flex" style="background-color: var(--grey);">
+            <div class="left-text">
+                <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
+                <p>麺アースでは民度が高く、プレイヤー同士の交流が活発です。<br>
+                そして、更新も現在続いており、ほかにもイベントなどもたまに開催されているので、ぜひサーバーを訪れてみてください！
+                </p>
+            </div>
+            <div style="background: #ccc; height: 300px; border-radius: 20px;">
+                <img src="//ここに画像を..." alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+            </div>
+        </section>
+
+        <!-- Interactive Details Section -->
+        <section id="details">
+            <div style="text-align: center;">
+                <h2 style="font-size: 32px;">機能を詳しく見る</h2>
+                <p style="color: #888; margin-top: 10px;">左のメニューを選択して、詳細を切り替えます。</p>
+            </div>
+
+            <div class="feature-container">
+                <div class="feature-nav" id="nav-buttons">
+                    <!-- JSでボタン生成 -->
+                </div>
+                <div class="feature-display" id="display-panel">
+                    <div id="display-content" class="fade-in">
+                        <h1 id="display-title" style="font-size: 36px; margin-bottom: 15px;">機能を選択</h1>
+                        <p id="display-desc" style="font-size: 18px; color: var(--accent); line-height: 1.6;">ここに説明が表示されます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid/List Switch Section -->
+        <section id="more">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-size: 28px;">麺アースの概要</h2>
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="renderView('grid')" id="btn-grid">グリッド</button>
+                    <button class="btn" onclick="renderView('list')" id="btn-list" style="background: transparent; color: var(--black); border: 1px solid var(--black);">リスト</button>
+                </div>
+            </div>
+            <div id="view-target" class="fade-in">
+                <!-- JSでコンテンツ生成 -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Copyright © 2026 MenEarth Project. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- データ定義 ---
+        const features = [
+            { id: "search", name: "ディスコード", desc: "マップ機能はないが、コミュニティー化がされており国の状況などもわかりやすい。" },
+            { id: "recipe", name: "運営", desc: "運営の対応速度は速く、プレイヤーのために尽力しています。" },
+            { id: "vote", name: "荒らし対策", desc: "荒らし行為をを報告すると、運営はすぐに対応します。また、マップを直してくれたりもしてくれます。" },
+            { id: "ui", name: "ほかのサーバーと違う点", desc: "大体のサーバーがマイクラバージョンが変わるごとに参加できなくなるが、このサーバーはちゃんと参加できる。" }
+        ];
+
+        // --- 詳細切り替え機能 ---
+        function initFeatureNav() {
+            const nav = document.getElementById('nav-buttons');
+            features.forEach((f, index) => {
+                const div = document.createElement('div');
+                div.className = 'nav-item';
+                div.innerText = f.name;
+                div.onclick = () => updateDetail(index, div);
+                nav.appendChild(div);
+                if(index === 0) updateDetail(0, div);
+            });
+        }
+
+        function updateDetail(index, el) {
+            const data = features[index];
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+
+            const content = document.getElementById('display-content');
+            document.getElementById('display-title').innerText = data.name;
+            document.getElementById('display-desc').innerText = data.desc;
+
+            // アニメーション再トリガー
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
+        }
+
+        // --- 表示形式切り替え機能 ---
+        function renderView(mode) {
+            const target = document.getElementById('view-target');
+            const btnGrid = document.getElementById('btn-grid');
+            const btnList = document.getElementById('btn-list');
+
+            // ボタン外観更新
+            if(mode === 'grid') {
+                btnGrid.style.background = "var(--black)"; btnGrid.style.color = "var(--white)";
+                btnList.style.background = "transparent"; btnList.style.color = "var(--black)";
+            } else {
+                btnList.style.background = "var(--black)"; btnList.style.color = "var(--white)";
+                btnGrid.style.background = "transparent"; btnGrid.style.color = "var(--black)";
+            }
+
+            let html = "";
+            if(mode === 'grid') {
+                html = '<div id="grid-container">';
+                features.forEach(f => html += `<div class="grid-box"><h3>${f.name}</h3></div>`);
+                html += '</div>';
+            } else {
+                html = '<div style="margin-top: 20px;">';
+                features.forEach(f => html += `<div class="list-box"><strong>${f.name}</strong><span>Active</span></div>`);
+                html += '</div>';
+            }
+            
+            target.innerHTML = html;
+        }
+
+        // 初期化
+        window.onload = () => {
+            initFeatureNav();
+            renderView('grid');
+        };
+    </script>
+</body>
+</html>
