@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>MenEarth S3.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp?size=100">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;500&family=Source+Code+Pro:wght@400&display=swap');
+        :root { --white: #111; --grey: #1a1a1a; --black: #fff; --input-bg: #222; }
+        * { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { background-color: var(--grey); color: var(--black); overflow-x: hidden; }
+        
+        header { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: rgba(20, 20, 20, 0.85); border-bottom: 1px solid #333; backdrop-filter: blur(15px); z-index: 9999; }
+        .header-nav-trigger { display: flex; align-items: center; cursor: pointer; user-select: none; padding: 5px 15px; border-radius: 20px; }
+        #logo { height: 30px; width: 30px; background-image: url('https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp'); background-size: cover; border-radius: 50%; margin-right: 12px; }
+        header h1 { font-size: 18px; font-weight: 100; letter-spacing: 2px; }
+        #mode-badge { font-size: 10px; background: #fff; color: #000; padding: 2px 8px; border-radius: 10px; margin-left: 10px; font-weight: 500; }
+
+        main { margin-top: 50px; }
+        #top { height: calc(100vh - 50px); display: flex; flex-direction: column; background-color: var(--white); text-align: center; justify-content: center; padding: 20px; }
+        #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; }
+        .btn { display: inline-block; color: #000; background-color: #fff; margin: 15px 5px; padding: 12px 30px; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; font-weight: 500; transition: 0.3s; }
+        .btn:hover { transform: scale(1.05); opacity: 0.9; }
+
+        #details { padding: 80px 10%; background-color: var(--white); }
+        .feature-container { display: flex; gap: 40px; margin-top: 40px; }
+        .feature-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .nav-item { padding: 20px; border: 1px solid #333; border-radius: 15px; cursor: pointer; transition: 0.3s; background: transparent; color: var(--black); }
+        .nav-item:hover { transform: translateX(10px); background: #222; }
+        .nav-item.active { background: #fff; color: #000; border-color: #fff; font-weight: 500; }
+        .feature-display { flex: 2; background: var(--grey); padding: 50px; border-radius: 30px; min-height: 400px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #222; }
+
+        #more { padding: 80px 10%; background-color: var(--grey); }
+        #grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
+        .grid-box { background: var(--white); padding: 40px 20px; border-radius: 20px; text-align: center; border: 1px solid #222; }
+        .list-box { background: var(--white); margin-bottom: 10px; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; border: 1px solid #222; }
+        .section-flex { display: flex; height: 80vh; align-items: center; padding: 0 10%; }
+        .section-flex > div { width: 50%; }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        footer { padding: 40px; text-align: center; font-size: 12px; border-top: 1px solid #222; background-color: var(--white); color: #666; }
+
+        /* Wiki系装飾 */
+        .wiki-input, .wiki-textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: var(--input-bg); color: var(--black); font-size: 16px; margin-bottom: 15px; }
+        .wiki-textarea { height: 250px; resize: vertical; line-height: 1.6; }
+        .wiki-display-content img { max-width: 100%; height: auto; border-radius: 12px; margin: 15px 0; display: block; border: 1px solid #333; }
+        .wiki-display-content ul { margin-left: 20px; margin-bottom: 15px; }
+        .wiki-display-content li { margin-bottom: 6px; line-height: 1.6; list-style-type: disc; color: #ddd; }
+        .wiki-separator { border: 1px solid #333; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #151515; width: 100%; }
+        .wiki-separator-title { background: #252525; padding: 12px 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+        .wiki-separator-body { padding: 15px 20px; display: none; border-top: 1px solid #232323; background: #111; line-height: 1.6; color: #ccc; }
+        .wiki-separator.open .wiki-separator-body { display: block; }
+        .wiki-code-block { font-family: 'Source Code Pro', monospace; background: #0b0b0b; padding: 12px 18px; border-radius: 8px; border-left: 4px solid #fff; color: #a9ffb7; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; font-size: 14px; }
+        .wiki-help-box { background: #151515; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-top: 15px; font-size: 13px; color: #aaa; text-align: left; }
+        
+        @media (max-width: 768px) { .feature-container { flex-direction: column; } #grid-container { grid-template-columns: 1fr; } .section-flex { flex-direction: column; height: auto !important; padding: 40px 10% !important; gap: 20px; } .section-flex > div { width: 100% !important; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-nav-trigger" onclick="toggleMainPage()">
+            <div id="logo"></div>
+            <h1>MenEarth S3</h1>
+            <span id="mode-badge">HOME</span>
+        </div>
+    </header>
+
+    <main>
+        <div id="page-home">
+            <section id="top">
+                <div id="top-text-content">
+                    <h1>MenEarth</h1>
+                    <h4 style="color: #888;">Created by: Mikancat10.</h4>
+                    <h3 style="font-size: 4vmin; margin-top: 20px;">マイクラサーバー内での国家建設と麺の融合</h3>
+                    <div style="margin-top: 30px;">
+                        <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
+                        <button class="btn" onclick="toggleMainPage()" style="background: transparent; color: var(--black); border: 1px solid var(--black);">共有Wikiを開く</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-flex" style="background-color: var(--grey);">
+                <div class="left-text">
+                    <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
+                    <p>麺アースでは民度が高く、プレイヤー同士の交流が活発です。<br>更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れてみてください！</p>
+                </div>
+                <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
+                    <img src="https://i.imgur.com/qNJNk24.png" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;">
+                </div>
+            </section>
+
+            <section id="details">
+                <div style="text-align: center;">
+                    <h2>機能を詳しく見る</h2>
+                    <p style="color: #888; margin-top: 10px;">左のメニューを選択して、詳細を切り替えます。</p>
+                </div>
+                <div class="feature-container">
+                    <div class="feature-nav" id="nav-buttons"></div>
+                    <div class="feature-display" id="display-panel">
+                        <div id="display-content" class="fade-in">
+                            <h1 id="display-title" style="font-size: 36px; margin-bottom: 15px;">機能を選択</h1>
+                            <p id="display-desc" style="font-size: 18px; color: #888; line-height: 1.6;">ここに説明が表示されます。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="more">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2>麺アースの概要</h2>
+                    <div style="margin-top: 20px;">
+                        <button class="btn" onclick="renderView('grid')" id="btn-grid">グリッド</button>
+                        <button class="btn" onclick="renderView('list')" id="btn-list" style="background: transparent; color: var(--black); border: 1px solid var(--black);">リスト</button>
+                    </div>
+                </div>
+                <div id="view-target" class="fade-in"></div>
+            </section>
+        </div>
+
+        <div id="page-wiki" style="display: none;">
+            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2>MenEarth 共有Wiki</h2>
+                    <div id="auth-status-container" style="margin-top: 15px;">
+                        <button id="btn-discord-login" class="btn" style="background:#5865F2; color:#fff; padding: 8px 20px; font-size:14px;">Discordでログイン</button>
+                        <span id="user-info" style="color:#aaa; font-size:14px; display:none;"></span>
+                        <button id="btn-discord-logout" class="btn" style="background:#f44; color:#fff; padding: 4px 12px; font-size:12px; display:none;">ログアウト</button>
+                    </div>
+                </div>
+
+                <div class="feature-container">
+                    <div class="feature-nav">
+                        <input type="text" id="wiki-search" placeholder="ページを検索..." class="wiki-input" style="margin-bottom: 10px;">
+                        <div id="wiki-page-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                        <hr style="border-color: #333; margin: 10px 0;">
+                        <button id="btn-create-page" class="btn" onclick="prepareNewPage()" style="margin: 0; width: 100%; display:none;">＋ 新しいページを作る</button>
+                        <p id="login-alert-text" style="color:#888; font-size:12px; text-align:center;">※ ページの作成・編集にはログインが必要です</p>
+                    </div>
+
+                    <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
+                        <div id="wiki-view-mode" style="width: 100%; text-align: left;">
+                            <h1 id="wiki-title" style="font-size: 32px; margin-bottom: 15px;">Wikiへようこそ</h1>
+                            <div id="wiki-author" style="font-size:12px; color:#666; margin-bottom:10px;"></div>
+                            <div id="wiki-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">左側からページを選択してください。</div>
+                            <div style="margin-top: 30px;">
+                                <button id="btn-wiki-edit" class="btn" style="display: none; margin: 0;" onclick="enableEditMode()">このページを編集する</button>
+                                <p id="edit-lock-msg" style="color:#f44; font-size:13px; display:none; margin-top:10px;">⚠️ このページは作成者本人しか編集できません。</p>
+                            </div>
+                        </div>
+
+                        <div id="wiki-edit-mode" style="display: none; width: 100%;">
+                            <input type="text" id="edit-wiki-title" placeholder="ページタイトル" class="wiki-input" style="font-size: 20px; font-weight: 500;">
+                            <textarea id="edit-wiki-content" placeholder="本文を入力してください..." class="wiki-textarea"></textarea>
+                            
+                            <div class="wiki-help-box">
+                                <strong>💡 書き方ルール:</strong><br>
+                                🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]<br>
+                                🔹 リスト: 行頭に <code style="color:#fff">* </code> | 折りたたみ: <code style="color:#fff">[title:題名]本文[end]</code> | 枠線: <code style="color:#fff">```文字```</code>
+                            </div>
+
+                            <div style="margin-top: 20px; text-align: left;">
+                                <button class="btn" onclick="saveWikiPage()" style="margin-left: 0;">保存する</button>
+                                <button class="btn" style="background: transparent; color: var(--black); border: 1px solid var(--black);" onclick="cancelEdit()">キャンセル</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer><p>Copyright © 2026 MenEarth Project. All rights reserved.</p></footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithPopup, OAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWJ8gxMBqlCH-HGccXb-PpwM7xWVghUNg",
+            authDomain: "my-ball-wiki.firebaseapp.com",
+            projectId: "my-ball-wiki",
+            storageBucket: "my-ball-wiki.firebasestorage.app",
+            messagingSenderId: "1004863748430",
+            appId: "1:1004863748430:web:584e16403e2eb87c90861f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const provider = new OAuthProvider('oauth.discord');
+
+        let currentPages = [], selectedPageId = null, currentUser = null;
+
+        // Discordログイン・ログアウト制御
+        document.getElementById('btn-discord-login').onclick = () => signInWithPopup(auth, provider).catch(e => console.error(e));
+        document.getElementById('btn-discord-logout').onclick = () => signOut(auth);
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const loginBtn = document.getElementById('btn-discord-login');
+            const logoutBtn = document.getElementById('btn-discord-logout');
+            const userInfo = document.getElementById('user-info');
+            const createBtn = document.getElementById('btn-create-page');
+            const alertTxt = document.getElementById('login-alert-text');
+
+            if (user) {
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                userInfo.style.display = 'inline';
+                userInfo.innerText = `ログイン中: ${user.displayName} さん `;
+                createBtn.style.display = 'block';
+                alertTxt.style.display = 'none';
+            } else {
+                loginBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+                userInfo.style.display = 'none';
+                createBtn.style.display = 'none';
+                alertTxt.style.display = 'block';
+            }
+            if(selectedPageId) selectWikiPage(selectedPageId);
+        });
+
+        window.toggleMainPage = function() {
+            const h = document.getElementById('page-home'), w = document.getElementById('page-wiki'), b = document.getElementById('mode-badge');
+            if (h.style.display !== 'none') { h.style.display = 'none'; w.style.display = 'block'; b.innerText = "WIKI"; loadWikiPages(); }
+            else { h.style.display = 'block'; w.style.display = 'none'; b.innerText = "HOME"; }
+        }
+
+        function parseWikiText(text) {
+            if (!text) return "";
+            let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            html = html.replace(/```([\s\S]*?)```/g, '<div class="wiki-code-block">$1</div>');
+            html = html.replace(/\[title:(.+?)\]([\s\S]*?)\[end\]/g, (m, t, b) => `<div class="wiki-separator" onclick="this.classList.toggle('open'); event.stopPropagation();"><div class="wiki-separator-title">${t}</div><div class="wiki-separator-body">${b}</div></div>`);
+            html = html.replace(/\[img:(.+?)\]/g, '<img src="$1" alt="Wiki画像" loading="lazy">');
+            html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>').replace(/\*([\s\S]+?)\*/g, '<em>$1</em>').replace(/~~([\s\S]+?)~~/g, '<del>$1</del>');
+            
+            let lines = html.split('\n'), inList = false;
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].trim().indexOf('* ') === 0) {
+                    let c = lines[i].replace(/^\s*\* /, '');
+                    lines[i] = !inList ? '<ul><li>' + c + '</li>' : '<li>' + c + '</li>';
+                    inList = true;
+                } else {
+                    if (inList) { lines[i - 1] += '</ul>'; inList = false; }
+                    if (!lines[i].includes('</div>') && !lines[i].includes('</li>')) lines[i] += '<br>';
+                }
+            }
+            if (inList) lines[lines.length - 1] += '</ul>';
+            return lines.join('\n');
+        }
+
+        async function loadWikiPages() {
+            const target = document.getElementById('wiki-page-list');
+            target.innerHTML = "<p style='color:#888; font-size:14px;'>同期中...</p>";
+            try {
+                const q = query(collection(db, "wiki"), orderBy("title", "asc"));
+                const snap = await getDocs(q);
+                currentPages = [];
+                snap.forEach(d => currentPages.push({ id: d.id, ...d.data() }));
+                renderPageList(currentPages);
+            } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
+        }
+
+        function renderPageList(pages) {
+            const target = document.getElementById('wiki-page-list'); target.innerHTML = "";
+            if(pages.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>記事なし</p>"; return; }
+            pages.forEach(p => {
+                const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = p.title;
+                if(selectedPageId === p.id) div.classList.add('active');
+                div.onclick = () => selectWikiPage(p.id);
+                target.appendChild(div);
+            });
+        }
+
+        document.getElementById('wiki-search').addEventListener('input', (e) => {
+            const k = e.target.value.toLowerCase();
+            renderPageList(currentPages.filter(p => p.title.toLowerCase().includes(k) || p.content.toLowerCase().includes(k)));
+        });
+
+        window.selectWikiPage = function(id) {
+            selectedPageId = id;
+            const page = currentPages.find(p => p.id === id);
+            if (!page) return;
+
+            document.getElementById('wiki-title').innerText = page.title;
+            document.getElementById('wiki-author').innerText = `作成者: ${page.authorName || '不明'}`;
+            document.getElementById('wiki-content').innerHTML = parseWikiText(page.content);
+            
+            const editBtn = document.getElementById('btn-wiki-edit');
+            const lockMsg = document.getElementById('edit-lock-msg');
+
+            // 👑 同一アカウント（uidが一致）のみ編集ボタンを表示させる条件分岐
+            if (currentUser && page.uid === currentUser.uid) {
+                editBtn.style.display = 'inline-block';
+                lockMsg.style.display = 'none';
+            } else {
+                editBtn.style.display = 'none';
+                lockMsg.style.display = currentUser ? 'block' : 'none';
+            }
+            cancelEdit();
+        }
+
+        window.prepareNewPage = function() {
+            selectedPageId = null;
+            document.getElementById('edit-wiki-title').value = "";
+            document.getElementById('edit-wiki-content').value = "";
+            document.getElementById('wiki-view-mode').style.display = 'none';
+            document.getElementById('wiki-edit-mode').style.display = 'block';
+        }
+
+        window.enableEditMode = function() {
+            const page = currentPages.find(p => p.id === selectedPageId);
+            if (!page) return;
+            document.getElementById('edit-wiki-title').value = page.title;
+            document.getElementById('edit-wiki-content').value = page.content;
+            document.getElementById('wiki-view-mode').style.display = 'none';
+            document.getElementById('wiki-edit-mode').style.display = 'block';
+        }
+
+        window.cancelEdit = function() {
+            document.getElementById('wiki-view-mode').style.display = 'block';
+            document.getElementById('wiki-edit-mode').style.display = 'none';
+        }
+
+        window.saveWikiPage = async function() {
+            const title = document.getElementById('edit-wiki-title').value.trim();
+            const content = document.getElementById('edit-wiki-content').value.trim();
+            if (!title || !content) { alert("入力してください。"); return; }
+            if (!currentUser) { alert("ログインが必要です。"); return; }
+
+            try {
+                if (selectedPageId) {
+                    const page = currentPages.find(p => p.id === selectedPageId);
+                    if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
+                    await updateDoc(doc(db, "wiki", selectedPageId), { title, content });
+                } else {
+                    // 新規作成時にDiscordのUIDとユーザー名を一緒に保存
+                    const docRef = await addDoc(collection(db, "wiki"), { 
+                        title, 
+                        content, 
+                        uid: currentUser.uid, 
+                        authorName: currentUser.displayName 
+                    });
+                    selectedPageId = docRef.id;
+                }
+                await loadWikiPages();
+                selectWikiPage(selectedPageId);
+            } catch (error) { alert("保存に失敗しました。"); }
+        }
+    </script>
+
+    <script>
+        const features = [
+            { id: "search", name: "ディスコード", desc: "マップ機能はないが、コミュニティー化がされており国の状況などもわかりやすい。" },
+            { id: "recipe", name: "運営", desc: "運営の対応速度は速く、プレイヤーのために尽力しています。" },
+            { id: "vote", name: "荒らし対策", desc: "荒らし行為をを報告すると、運営はすぐに対応します。また、マップを直してくれたりもしてくれます。" },
+            { id: "ui", name: "ほかのサーバーと違う点", desc: "大体のサーバーがマイクラバージョンが変わるごとに参加できなくなるが、このサーバーはちゃんと参加できる。" }
+        ];
+        function initFeatureNav() {
+            const nav = document.getElementById('nav-buttons');
+            features.forEach((f, index) => {
+                const div = document.createElement('div'); div.className = 'nav-item'; div.innerText = f.name;
+                div.onclick = () => updateDetail(index, div); nav.appendChild(div);
+                if(index === 0) updateDetail(0, div);
+            });
+        }
+        function updateDetail(index, el) {
+            const data = features[index];
+            document.querySelectorAll('#nav-buttons .nav-item').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+            const content = document.getElementById('display-content');
+            document.getElementById('display-title').innerText = data.name;
+            document.getElementById('display-desc').innerText = data.desc;
+            content.classList.remove('fade-in'); void content.offsetWidth; content.classList.add('fade-in');
+        }
+        function renderView(mode) {
+            const target = document.getElementById('view-target'), bG = document.getElementById('btn-grid'), bL = document.getElementById('btn-list');
+            if(mode === 'grid') { bG.style.background = "#fff"; bG.style.color = "#000"; bL.style.background = "transparent"; bL.style.color = "var(--black)"; }
+            else { bL.style.background = "#fff"; bL.style.color = "#000"; bG.style.background = "transparent"; bG.style.color = "var(--black)"; }
+            let html = "";
+            if(mode === 'grid') {
+                html = '<div id="grid-container">';
+                features.forEach(f => html += `<div class="grid-box"><h3>${f.name}</h3></div>`);
+                html += '</div>';
+            } else {
+                html = '<div style="margin-top: 20px;">';
+                features.forEach(f => html += `<div class="list-box"><strong>${f.name}</strong><span>Active</span></div>`);
+                html += '</div>';
+            }
+            target.innerHTML = html;
+        }
+        window.addEventListener('DOMContentLoaded', () => { initFeatureNav(); renderView('grid'); });
+    </script>
+</body>
+</html>
