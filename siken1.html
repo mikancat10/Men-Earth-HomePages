@@ -18,8 +18,23 @@
         #mode-badge { font-size: 10px; background: #fff; color: #000; padding: 2px 8px; border-radius: 10px; margin-left: 10px; font-weight: 500; }
 
         main { margin-top: 50px; }
-        #top { height: calc(100vh - 50px); display: flex; flex-direction: column; background-color: var(--white); text-align: center; justify-content: center; padding: 20px; }
-        #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; }
+        
+        /* 💡 トップセクションの背景画像設定 */
+        #top { 
+            height: calc(100vh - 50px); 
+            display: flex; 
+            flex-direction: column; 
+            text-align: center; 
+            justify-content: center; 
+            padding: 20px; 
+            /* 好きな画像URLに差し替える場合は下の 'https://...' の部分を書き換えてね */
+            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('https://i.imgur.com/qNJNk24.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; color: #fff; }
         .btn { display: inline-block; color: #000; background-color: #fff; margin: 15px 5px; padding: 12px 30px; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; font-weight: 500; transition: 0.3s; }
         .btn:hover { transform: scale(1.05); opacity: 0.9; }
 
@@ -54,6 +69,8 @@
         .wiki-code-block { font-family: 'Source Code Pro', monospace; background: #0b0b0b; padding: 12px 18px; border-radius: 8px; border-left: 4px solid #fff; color: #a9ffb7; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; font-size: 14px; }
         .wiki-help-box { background: #151515; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-top: 15px; font-size: 13px; color: #aaa; text-align: left; }
         
+        .auth-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        
         @media (max-width: 768px) { .feature-container { flex-direction: column; } #grid-container { grid-template-columns: 1fr; } .section-flex { flex-direction: column; height: auto !important; padding: 40px 10% !important; gap: 20px; } .section-flex > div { width: 100% !important; } }
     </style>
 </head>
@@ -72,11 +89,11 @@
             <section id="top">
                 <div id="top-text-content">
                     <h1>MenEarth</h1>
-                    <h4 style="color: #888;">Created by: Mikancat10.</h4>
-                    <h3 style="font-size: 4vmin; margin-top: 20px;">マイクラサーバー内での国家建設と麺の融合</h3>
+                    <h4 style="color: #ccc;">Created by: Mikancat10.</h4>
+                    <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラサーバー内での国家建設と麺の融合</h3>
                     <div style="margin-top: 30px;">
                         <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
-                        <button class="btn" onclick="toggleMainPage()" style="background: transparent; color: var(--black); border: 1px solid var(--black);">共有Wikiを開く</button>
+                        <button class="btn" onclick="toggleMainPage()" style="background: transparent; color: #fff; border: 1px solid #fff;">共有Wikiを開く</button>
                     </div>
                 </div>
             </section>
@@ -84,7 +101,7 @@
             <section class="section-flex" style="background-color: var(--grey);">
                 <div class="left-text">
                     <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
-                    <p>麺アースでは民度が高く、プレイヤー同士の交流が活発です。<br>更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れてみてください！</p>
+                    <p>麺アースでは民度が高く、プレイヤー同士の交流が活発です。<br>更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れたみてください！</p>
                 </div>
                 <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
                     <img src="https://i.imgur.com/qNJNk24.png" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;">
@@ -123,10 +140,10 @@
             <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h2>MenEarth 共有Wiki</h2>
-                    <div id="auth-status-container" style="margin-top: 15px;">
-                        <button id="btn-discord-login" class="btn" style="background:#5865F2; color:#fff; padding: 8px 20px; font-size:14px;">Discordでログイン</button>
+                    <div id="auth-status-container" class="auth-buttons">
+                        <button id="btn-google-login" class="btn" style="background:#ea4335; color:#fff; padding: 8px 20px; font-size:14px; margin: 0 5px;">Googleでログイン</button>
                         <span id="user-info" style="color:#aaa; font-size:14px; display:none;"></span>
-                        <button id="btn-discord-logout" class="btn" style="background:#f44; color:#fff; padding: 4px 12px; font-size:12px; display:none;">ログアウト</button>
+                        <button id="btn-discord-logout" class="btn" style="background:#f44; color:#fff; padding: 4px 12px; font-size:12px; display:none; margin: 0 5px;">ログアウト</button>
                     </div>
                 </div>
 
@@ -176,7 +193,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, signInWithPopup, OAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAWJ8gxMBqlCH-HGccXb-PpwM7xWVghUNg",
@@ -190,31 +207,31 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const provider = new OAuthProvider('oauth.discord');
-
+        
+        const googleProvider = new GoogleAuthProvider();
         let currentPages = [], selectedPageId = null, currentUser = null;
 
-        // Discordログイン・ログアウト制御
-        document.getElementById('btn-discord-login').onclick = () => signInWithPopup(auth, provider).catch(e => console.error(e));
+        // Google ログイン・ログアウト制御
+        document.getElementById('btn-google-login').onclick = () => signInWithPopup(auth, googleProvider).catch(e => console.error(e));
         document.getElementById('btn-discord-logout').onclick = () => signOut(auth);
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
-            const loginBtn = document.getElementById('btn-discord-login');
+            const googleBtn = document.getElementById('btn-google-login');
             const logoutBtn = document.getElementById('btn-discord-logout');
             const userInfo = document.getElementById('user-info');
             const createBtn = document.getElementById('btn-create-page');
             const alertTxt = document.getElementById('login-alert-text');
 
             if (user) {
-                loginBtn.style.display = 'none';
+                googleBtn.style.display = 'none';
                 logoutBtn.style.display = 'inline-block';
                 userInfo.style.display = 'inline';
-                userInfo.innerText = `ログイン中: ${user.displayName} さん `;
+                userInfo.innerText = `ログイン中: ${user.displayName || 'ユーザー'} さん `;
                 createBtn.style.display = 'block';
                 alertTxt.style.display = 'none';
             } else {
-                loginBtn.style.display = 'inline-block';
+                googleBtn.style.display = 'inline-block';
                 logoutBtn.style.display = 'none';
                 userInfo.style.display = 'none';
                 createBtn.style.display = 'none';
@@ -292,7 +309,6 @@
             const editBtn = document.getElementById('btn-wiki-edit');
             const lockMsg = document.getElementById('edit-lock-msg');
 
-            // 👑 同一アカウント（uidが一致）のみ編集ボタンを表示させる条件分岐
             if (currentUser && page.uid === currentUser.uid) {
                 editBtn.style.display = 'inline-block';
                 lockMsg.style.display = 'none';
@@ -337,12 +353,11 @@
                     if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
                     await updateDoc(doc(db, "wiki", selectedPageId), { title, content });
                 } else {
-                    // 新規作成時にDiscordのUIDとユーザー名を一緒に保存
                     const docRef = await addDoc(collection(db, "wiki"), { 
                         title, 
                         content, 
                         uid: currentUser.uid, 
-                        authorName: currentUser.displayName 
+                        authorName: currentUser.displayName || '名無しプレイヤー'
                     });
                     selectedPageId = docRef.id;
                 }
