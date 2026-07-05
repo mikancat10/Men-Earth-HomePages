@@ -273,7 +273,8 @@
             const target = document.getElementById('wiki-page-list');
             target.innerHTML = "<p style='color:#888; font-size:14px;'>同期中...</p>";
             try {
-                const q = query(collection(db, "wiki"), orderBy("title", "asc"));
+                // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
+                const q = query(collection(db, "menearth_wiki"), orderBy("title", "asc"));
                 const snap = await getDocs(q);
                 currentPages = [];
                 snap.forEach(d => currentPages.push({ id: d.id, ...d.data() }));
@@ -351,9 +352,11 @@
                 if (selectedPageId) {
                     const page = currentPages.find(p => p.id === selectedPageId);
                     if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
-                    await updateDoc(doc(db, "wiki", selectedPageId), { title, content });
+                    // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
+                    await updateDoc(doc(db, "menearth_wiki", selectedPageId), { title, content });
                 } else {
-                    const docRef = await addDoc(collection(db, "wiki"), { 
+                    // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
+                    const docRef = await addDoc(collection(db, "menearth_wiki"), { 
                         title, 
                         content, 
                         uid: currentUser.uid, 
