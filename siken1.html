@@ -82,8 +82,8 @@
 </head>
 <body>
 
-    <header>
-        <div class="header-nav-trigger" onclick="toggleMainPage()">
+<header>
+        <div class="header-nav-trigger" onclick="toggleMainPage('home')">
             <div id="logo"></div>
             <h1>MenEarth S3</h1>
             <span id="mode-badge">HOME</span>
@@ -96,7 +96,7 @@
                 <div id="top-text-content">
                     <h1>MenEarth</h1>
                     <h4 style="color: #ccc;">Created by: Mikancat10.</h4>
-                    <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラサーバー内での国家建設と世界征服</h3>
+                    <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラ(統合版)での国家建設、世界征服</h3>
                     
                     <!-- 💡 サーバー人数表示エリアを追加 -->
                     <div class="server-status-container">
@@ -104,10 +104,13 @@
                         <span id="server-player-count">サーバー人数: 取得中...</span>
                     </div>
 
-                    <div style="margin-top: 30px;">
-                        <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
-                        <button class="btn" onclick="toggleMainPage()" style="background: transparent; color: #fff; border: 1px solid #fff;">共有Wikiを開く</button>
-                    </div>
+                    
+<!-- 既存のボタン周辺を以下のように書き換え、または追加 -->
+<div style="margin-top: 30px;">
+    <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
+    <button class="btn" onclick="toggleMainPage('wiki')" style="background: transparent; color: #fff; border: 1px solid #fff;">共有Wikiを開く</button>
+    <button class="btn" onclick="toggleMainPage('event')" style="background: #4caf50; color: #fff; border: none;">イベント情報</button>
+</div>
                 </div>
             </section>
 
@@ -199,12 +202,62 @@
                 </div>
             </section>
         </div>
+
+        <!-- 💡 追加: イベントページ -->
+        <div id="page-event" style="display: none;">
+            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2>MenEarth イベント情報</h2>
+                    <p style="color: #888; margin-top: 10px;">サーバー内で開催される最新のイベント情報です！</p>
+                </div>
+
+                <div class="feature-container">
+                    <!-- 左側：イベント一覧と管理者用ボタン -->
+                    <div class="feature-nav">
+                        <div id="event-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                        <hr id="event-admin-hr" style="border-color: #333; margin: 10px 0; display: none;">
+                        <button id="btn-create-event" class="btn" onclick="prepareNewEvent()" style="margin: 0; width: 100%; display: none; background: #4caf50; color: #fff;">＋ 新しいイベントを投稿</button>
+                    </div>
+
+                    <!-- 右側：イベント詳細 or 編集画面 -->
+                    <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
+                        <!-- 閲覧モード -->
+                        <div id="event-view-mode" style="width: 100%; text-align: left;">
+                            <h1 id="event-title" style="font-size: 32px; margin-bottom: 15px;">イベントを選択</h1>
+                            <div id="event-date" style="font-size:14px; color:#aaa; margin-bottom:15px;"></div>
+                            <div id="event-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">左側からイベントを選択してください。</div>
+                            <div style="margin-top: 30px;">
+                                <button id="btn-event-edit" class="btn" style="display: none; margin: 0;" onclick="enableEventEditMode()">このイベントを編集する</button>
+                            </div>
+                        </div>
+
+                        <!-- 編集・新規作成モード -->
+                        <div id="event-edit-mode" style="display: none; width: 100%;">
+                            <input type="text" id="edit-event-title" placeholder="イベントタイトル" class="wiki-input" style="font-size: 20px; font-weight: 500;">
+                            <input type="text" id="edit-event-date" placeholder="開催日時 (例: 2026年8月1日 21:00〜)" class="wiki-input" style="font-size: 16px;">
+                            <textarea id="edit-event-content" placeholder="イベントの詳細やルール、参加条件などを入力してください（Wikiと同じルールで太字や画像[img:URL]が使えます）" class="wiki-textarea"></textarea>
+                            
+                            <div class="wiki-help-box">
+                                <strong>💡 書き方ルール:</strong><br>
+                                🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]<br>
+                                🔹 リスト: 行頭に <code style="color:#fff">* </code> | 折りたたみ: <code style="color:#fff">[title:題名]本文[end]</code>
+                            </div>
+
+                            <div style="margin-top: 20px; text-align: left;">
+                                <button class="btn" onclick="saveEventPage()" style="margin-left: 0; background: #fff; color: #000;">イベントを保存</button>
+                                <button class="btn" style="background: transparent; color: var(--black); border: 1px solid var(--black);" onclick="cancelEventEdit()">キャンセル</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer><p>Copyright © 2026 MenEarth Project. All rights reserved.</p></footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -223,6 +276,10 @@
         
         const googleProvider = new GoogleAuthProvider();
         let currentPages = [], selectedPageId = null, currentUser = null;
+        
+        // 💡 イベントページ用の変数
+        let currentEvents = [], selectedEventId = null;
+        const ADMIN_EMAIL = "mikancat09@gmail.com"; // 管理者メールアドレス
 
         // Google ログイン・ログアウト制御
         document.getElementById('btn-google-login').onclick = () => signInWithPopup(auth, googleProvider).catch(e => console.error(e));
@@ -251,12 +308,41 @@
                 alertTxt.style.display = 'block';
             }
             if(selectedPageId) selectWikiPage(selectedPageId);
+            
+            // 💡 ログイン状態が変わったらイベント側の権限チェックも行う
+            checkEventAdminPermission();
         });
 
-        window.toggleMainPage = function() {
-            const h = document.getElementById('page-home'), w = document.getElementById('page-wiki'), b = document.getElementById('mode-badge');
-            if (h.style.display !== 'none') { h.style.display = 'none'; w.style.display = 'block'; b.innerText = "WIKI"; loadWikiPages(); }
-            else { h.style.display = 'block'; w.style.display = 'none'; b.innerText = "HOME"; }
+        // 💡 三要素（HOME / WIKI / EVENT）の切り替えに対応できるように関数を拡張
+        window.toggleMainPage = function(targetMode) {
+            const h = document.getElementById('page-home');
+            const w = document.getElementById('page-wiki');
+            const e = document.getElementById('page-event');
+            const b = document.getElementById('mode-badge');
+
+            // いったん全部非表示
+            h.style.display = 'none';
+            w.style.display = 'none';
+            e.style.display = 'none';
+
+            // 引数がない、または 'home' の場合はトグル動作（既存の挙動の維持用）
+            if (!targetMode) {
+                if (h.style.display !== 'none') targetMode = 'wiki';
+                else targetMode = 'home';
+            }
+
+            if (targetMode === 'wiki') {
+                w.style.display = 'block';
+                b.innerText = "WIKI";
+                loadWikiPages();
+            } else if (targetMode === 'event') {
+                e.style.display = 'block';
+                b.innerText = "EVENT";
+                loadEventPages();
+            } else {
+                h.style.display = 'block';
+                b.innerText = "HOME";
+            }
         }
 
         function parseWikiText(text) {
@@ -264,7 +350,7 @@
             let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             html = html.replace(/```([\s\S]*?)```/g, '<div class="wiki-code-block">$1</div>');
             html = html.replace(/\[title:(.+?)\]([\s\S]*?)\[end\]/g, (m, t, b) => `<div class="wiki-separator" onclick="this.classList.toggle('open'); event.stopPropagation();"><div class="wiki-separator-title">${t}</div><div class="wiki-separator-body">${b}</div></div>`);
-            html = html.replace(/\[img:(.+?)\]/g, '<img src="$1" alt="Wiki画像" loading="lazy">');
+            html = html.replace(/\[img:(.+?)\]/g, '<img src="$1" alt="画像" loading="lazy">');
             html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>').replace(/\*([\s\S]+?)\*/g, '<em>$1</em>').replace(/~~([\s\S]+?)~~/g, '<del>$1</del>');
             
             let lines = html.split('\n'), inList = false;
@@ -282,11 +368,11 @@
             return lines.join('\n');
         }
 
+        /* ==================== 既存のWIKI用処理 ==================== */
         async function loadWikiPages() {
             const target = document.getElementById('wiki-page-list');
             target.innerHTML = "<p style='color:#888; font-size:14px;'>同期中...</p>";
             try {
-                // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
                 const q = query(collection(db, "menearth_wiki"), orderBy("title", "asc"));
                 const snap = await getDocs(q);
                 currentPages = [];
@@ -365,10 +451,8 @@
                 if (selectedPageId) {
                     const page = currentPages.find(p => p.id === selectedPageId);
                     if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
-                    // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
                     await updateDoc(doc(db, "menearth_wiki", selectedPageId), { title, content });
                 } else {
-                    // 💡 コレクション名を "wiki" から "menearth_wiki" に変更
                     const docRef = await addDoc(collection(db, "menearth_wiki"), { 
                         title, 
                         content, 
@@ -381,11 +465,130 @@
                 selectWikiPage(selectedPageId);
             } catch (error) { alert("保存に失敗しました。"); }
         }
+
+
+        /* ==================== 💡 追加: イベントページ用処理 ==================== */
+        
+        // 管理者かどうかの表示切り替え
+        function checkEventAdminPermission() {
+            const createEventBtn = document.getElementById('btn-create-event');
+            const adminHr = document.getElementById('event-admin-hr');
+            const editEventBtn = document.getElementById('btn-event-edit');
+
+            // ログイン中のメールアドレスが指定の管理者のものか判定
+            if (currentUser && currentUser.email === ADMIN_EMAIL) {
+                createEventBtn.style.display = 'block';
+                adminHr.style.display = 'block';
+                if (selectedEventId) editEventBtn.style.display = 'inline-block';
+            } else {
+                createEventBtn.style.display = 'none';
+                adminHr.style.display = 'none';
+                editEventBtn.style.display = 'none';
+            }
+        }
+
+        // イベント一覧の読み込み
+        async function loadEventPages() {
+            const target = document.getElementById('event-list');
+            target.innerHTML = "<p style='color:#888; font-size:14px;'>イベント同期中...</p>";
+            try {
+                // コレクション「menearth_events」から取得
+                const q = query(collection(db, "menearth_events"), orderBy("title", "asc"));
+                const snap = await getDocs(q);
+                currentEvents = [];
+                snap.forEach(d => currentEvents.push({ id: d.id, ...d.data() }));
+                renderEventList(currentEvents);
+            } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
+        }
+
+        // イベント一覧のレンダリング
+        function renderEventList(events) {
+            const target = document.getElementById('event-list'); target.innerHTML = "";
+            if(events.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>現在予定されているイベントはありません</p>"; return; }
+            events.forEach(e => {
+                const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = e.title;
+                if(selectedEventId === e.id) div.classList.add('active');
+                div.onclick = () => selectEventPage(e.id);
+                target.appendChild(div);
+            });
+        }
+
+        // イベント詳細の選択
+        window.selectEventPage = function(id) {
+            selectedEventId = id;
+            const event = currentEvents.find(e => e.id === id);
+            if (!event) return;
+
+            document.getElementById('event-title').innerText = event.title;
+            document.getElementById('event-date').innerText = `📅 開催日時: ${event.date || '未定'}`;
+            document.getElementById('event-content').innerHTML = parseWikiText(event.content); // Wikiの装飾ルールを共通適用
+            
+            checkEventAdminPermission();
+            cancelEventEdit();
+        }
+
+        // 新規イベント作成画面の準備
+        window.prepareNewEvent = function() {
+            if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+            selectedEventId = null;
+            document.getElementById('edit-event-title').value = "";
+            document.getElementById('edit-event-date').value = "";
+            document.getElementById('edit-event-content').value = "";
+            document.getElementById('event-view-mode').style.display = 'none';
+            document.getElementById('event-edit-mode').style.display = 'block';
+        }
+
+        // イベント編集モードへ切り替え
+        window.enableEventEditMode = function() {
+            if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+            const event = currentEvents.find(e => e.id === selectedEventId);
+            if (!event) return;
+            document.getElementById('edit-event-title').value = event.title;
+            document.getElementById('edit-event-date').value = event.date || "";
+            document.getElementById('edit-event-content').value = event.content;
+            document.getElementById('event-view-mode').style.display = 'none';
+            document.getElementById('event-edit-mode').style.display = 'block';
+        }
+
+        // 編集キャンセル
+        window.cancelEventEdit = function() {
+            document.getElementById('event-view-mode').style.display = 'block';
+            document.getElementById('event-edit-mode').style.display = 'none';
+        }
+
+        // イベント保存処理
+        window.saveEventPage = async function() {
+            if (!currentUser || currentUser.email !== ADMIN_EMAIL) { alert("権限がありません。"); return; }
+            
+            const title = document.getElementById('edit-event-title').value.trim();
+            const date = document.getElementById('edit-event-date').value.trim();
+            const content = document.getElementById('edit-event-content').value.trim();
+            
+            if (!title || !content) { alert("タイトルと本文を入力してください。"); return; }
+
+            try {
+                if (selectedEventId) {
+                    // 既存編集
+                    await updateDoc(doc(db, "menearth_events", selectedEventId), { title, date, content });
+                } else {
+                    // 新規追加
+                    const docRef = await addDoc(collection(db, "menearth_events"), { 
+                        title, 
+                        date,
+                        content, 
+                        uid: currentUser.uid
+                    });
+                    selectedEventId = docRef.id;
+                }
+                await loadEventPages();
+                selectEventPage(selectedEventId);
+            } catch (error) { alert("イベントの保存に失敗しました。"); }
+        }
     </script>
 
     <script>
         const features = [
-            { id: "search", name: "ディスコード", desc: "マップ機能はないが、コミュニティー化がされており国の状況などもわかりやすい。" },
+            { id: "search", name: "ディスコード", desc: "S3に初めてマップ機能が追加され、いろいろな国の状況がわかりやすくなりました。さらにディスコードではコミュニティー化されており、国の情報がわかりやすい" },
             { id: "recipe", name: "運営", desc: "運営の対応速度は速く、プレイヤーのために尽力しています。" },
             { id: "vote", name: "荒らし対策", desc: "荒らし行為をを報告すると、運営はすぐに対応します。また、マップを直してくれたりもしてくれます。" },
             { id: "ui", name: "ほかのサーバーと違う点", desc: "大体のサーバーがマイクラバージョンが変わるごとに参加できなくなるが、このサーバーはちゃんと参加できる。" }
