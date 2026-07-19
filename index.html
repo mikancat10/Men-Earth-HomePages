@@ -28,7 +28,7 @@
             justify-content: center; 
             padding: 20px; 
             /* 好きな画像URLに差し替える場合は下の 'https://...' の部分を書き換えてね */
-            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('4214863_s.jpg'); 
+            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('https://cdn.pakutaso.com/shared/img/thumb/YAT20314032_TP_V.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -37,6 +37,12 @@
         #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; color: #fff; }
         .btn { display: inline-block; color: #000; background-color: #fff; margin: 15px 5px; padding: 12px 30px; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; font-weight: 500; transition: 0.3s; }
         .btn:hover { transform: scale(1.05); opacity: 0.9; }
+
+        /* 💡 サーバー人数表示用スタイルの追加 */
+        .server-status-container { margin-top: 20px; font-size: 18px; color: #fff; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #888; display: inline-block; }
+        .status-dot.online { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+        .status-dot.offline { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
 
         #details { padding: 80px 10%; background-color: var(--white); }
         .feature-container { display: flex; gap: 40px; margin-top: 40px; }
@@ -91,6 +97,13 @@
                     <h1>MenEarth</h1>
                     <h4 style="color: #ccc;">Created by: Mikancat10.</h4>
                     <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラサーバー内での国家建設と世界征服</h3>
+                    
+                    <!-- 💡 サーバー人数表示エリアを追加 -->
+                    <div class="server-status-container">
+                        <span id="status-indicator" class="status-dot"></span>
+                        <span id="server-player-count">サーバー人数: 取得中...</span>
+                    </div>
+
                     <div style="margin-top: 30px;">
                         <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
                         <button class="btn" onclick="toggleMainPage()" style="background: transparent; color: #fff; border: 1px solid #fff;">共有Wikiを開く</button>
@@ -410,7 +423,43 @@
             }
             target.innerHTML = html;
         }
-        window.addEventListener('DOMContentLoaded', () => { initFeatureNav(); renderView('grid'); });
+
+        // 💡 サーバーの人数・ステータスを取得する処理を追加
+        async function fetchServerStatus() {
+            const serverIp = "men-earth.xgames.jp";
+            const serverPort = 19132;
+            const textElement = document.getElementById('server-player-count');
+            const indicator = document.getElementById('status-indicator');
+
+            try {
+                // mcstatus.ioのBedrock(統合版)用APIを利用
+                const response = await fetch(`https://api.mcstatus.io/v2/status/bedrock/${serverIp}:${serverPort}`);
+                if (!response.ok) throw new Error('Network error');
+                
+                const data = await response.json();
+
+                if (data.online) {
+                    const currentPlayers = data.players.online;
+                    const maxPlayers = data.players.max;
+                    textElement.innerText = `現在オンライン: ${currentPlayers} / ${maxPlayers} 人`;
+                    indicator.className = "status-dot online";
+                } else {
+                    textElement.innerText = "サーバーは現在オフラインです";
+                    indicator.className = "status-dot offline";
+                }
+            } catch (error) {
+                console.error("ステータスの取得に失敗しました:", error);
+                textElement.innerText = "人数情報の取得に失敗しました";
+                indicator.className = "status-dot";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            initFeatureNav(); 
+            renderView('grid'); 
+            fetchServerStatus(); // 💡 初回読み込み時にサーバー人数を取得
+            setInterval(fetchServerStatus, 60000); // 💡 60秒ごとに自動更新
+        });
     </script>
 </body>
 </html>
