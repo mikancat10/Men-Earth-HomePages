@@ -11,6 +11,89 @@
         * { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { background-color: var(--grey); color: var(--black); overflow-x: hidden; }
         
+        /* 🔒 認証が完了するまでページスクロールを禁止 */
+        body.captcha-locked { overflow: hidden; }
+
+        /* 🔒 全画面BOT対策モーダルのスタイル */
+        #captcha-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .captcha-box {
+            background: #181818;
+            border: 1px solid #333;
+            padding: 30px 25px;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .captcha-box h3 { font-size: 20px; margin-bottom: 8px; font-weight: 500; }
+        .captcha-box p { font-size: 13px; color: #aaa; margin-bottom: 15px; }
+        .captcha-img-wrapper {
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 140px;
+        }
+        .captcha-box img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+        }
+        .captcha-box input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+        }
+        .captcha-box input[type="text"]:focus {
+            border-color: #fff;
+        }
+        .captcha-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            background: #fff;
+            color: #000;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .captcha-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        #captcha-msg {
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 18px;
+        }
+
         header { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: rgba(20, 20, 20, 0.85); border-bottom: 1px solid #333; backdrop-filter: blur(15px); z-index: 9999; }
         .header-nav-trigger { display: flex; align-items: center; cursor: pointer; user-select: none; padding: 5px 15px; border-radius: 20px; }
         #logo { height: 30px; width: 30px; background-image: url('https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp'); background-size: cover; border-radius: 50%; margin-right: 12px; }
@@ -80,9 +163,23 @@
         @media (max-width: 768px) { .feature-container { flex-direction: column; } #grid-container { grid-template-columns: 1fr; } .section-flex { flex-direction: column; height: auto !important; padding: 40px 10% !important; gap: 20px; } .section-flex > div { width: 100% !important; } }
     </style>
 </head>
-<body>
+<body class="captcha-locked">
 
-<header>
+    <!-- 🔒 サイト起動時のBOT対策用モーダル表示 -->
+    <div id="captcha-overlay">
+        <div class="captcha-box">
+            <h3>BOT対策認証</h3>
+            <p>サイトを閲覧するには、画像に書かれている文字を入力してください。</p>
+            <div class="captcha-img-wrapper">
+                <img id="captcha-img" src="" alt="CAPTCHA認証画像">
+            </div>
+            <input type="text" id="captcha-input" placeholder="文字を入力..." autocomplete="off">
+            <button type="button" class="captcha-btn" onclick="verifyCaptcha()">認証する</button>
+            <p id="captcha-msg"></p>
+        </div>
+    </div>
+
+    <header>
         <div class="header-nav-trigger" onclick="toggleMainPage('home')">
             <div id="logo"></div>
             <h1>MenEarth S3</h1>
@@ -95,9 +192,8 @@
             <section id="top">
                 <div id="top-text-content">
                     <h1>MenEarth</h1>
-                    <h4 style="color: #ccc;">Created by: Mikancat10.</h4>
+                    <h4 style="color: #ccc;">Created by: Mikancat10. 非公式公認ホームページ</h4>
                     <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラ(統合版)での国家建設、世界征服</h3>
-                    
                     <!-- 💡 サーバー人数表示エリアを追加 -->
                     <div class="server-status-container">
                         <span id="status-indicator" class="status-dot"></span>
@@ -254,10 +350,67 @@
         </div>
     </main>
 
-    <footer><p>Copyright © 2026 MenEarth Project. All rights reserved.</p></footer>
+    <footer><p>非公式公認的MenEarthのHomePages Copyright © 2026 MenEarth All rights reserved.</p></footer>
+
+    <!-- 🔒 BOT対策CAPTCHA用のスクリプト -->
+    <script>
+        const captchaData = [
+            { src: '無題 (4).jpg', answer: 'everyone' },
+            { src: '無題 (3).jpg', answer: 'Hi' },
+            { src: '無題 (2).jpg', answer: 'きみの' },
+            { src: '無題 (1).jpg', answer: 'しょぼん' },
+            { src: '無題.jpg', answer: 'みかん' }
+        ];
+
+        let currentCaptcha = null;
+
+        function loadCaptcha() {
+            const randomIndex = Math.floor(Math.random() * captchaData.length);
+            currentCaptcha = captchaData[randomIndex];
+            
+            document.getElementById('captcha-img').src = currentCaptcha.src;
+            document.getElementById('captcha-input').value = '';
+            document.getElementById('captcha-msg').innerText = '';
+        }
+
+        function verifyCaptcha() {
+            const userInput = document.getElementById('captcha-input').value.trim();
+            const msg = document.getElementById('captcha-msg');
+
+            if (!userInput) {
+                msg.style.color = '#ff4444';
+                msg.innerText = '文字を入力してください。';
+                return;
+            }
+
+            if (userInput.toLowerCase() === currentCaptcha.answer.toLowerCase()) {
+                msg.style.color = '#4caf50';
+                msg.innerText = '認証成功！移動中...';
+                
+                setTimeout(() => {
+                    document.getElementById('captcha-overlay').style.display = 'none';
+                    document.body.classList.remove('captcha-locked');
+                }, 500);
+            } else {
+                msg.style.color = '#ff4444';
+                msg.innerText = '不正解です。再試行してください。';
+                setTimeout(loadCaptcha, 1000);
+            }
+        }
+
+        // エンターキーでも送信できるように対応
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCaptcha();
+            document.getElementById('captcha-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    verifyCaptcha();
+                }
+            });
+        });
+    </script>
 
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
