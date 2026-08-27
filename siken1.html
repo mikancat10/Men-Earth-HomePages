@@ -2,7 +2,7 @@
 <html lang="ja" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>MenEarth S4.</title>
+    <title>MenEarth S3.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp?size=100">
     <style>
@@ -111,10 +111,7 @@
             justify-content: center; 
             padding: 20px; 
             /* 好きな画像URLに差し替える場合は下の 'https://...' の部分を書き換えてね */
-            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('6952727e-f1be-4db6-8a7a-eb8ca881e492.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('https://cdn.pakutaso.com/shared/img/thumb/YAT20314032_TP_V.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -146,84 +143,8 @@
         .section-flex > div { width: 50%; }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-footer {
-    padding: 60px 10% 40px;
-    background-color: var(--white);
-    color: #888;
-    border-top: 1px solid #222;
-    font-size: 13px;
-}
+        footer { padding: 40px; text-align: center; font-size: 12px; border-top: 1px solid #222; background-color: var(--white); color: #666; }
 
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.footer-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.footer-right {
-    flex: 1;
-}
-
-.footer-title {
-    color: var(--black);
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.footer-links-inline {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.footer-links-inline a,
-.footer-links-list a {
-    color: #888;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.footer-links-inline a:hover,
-.footer-links-list a:hover {
-    color: var(--black);
-}
-
-.footer-links-list {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    list-style: none;
-}
-
-.footer-desc {
-    line-height: 1.7;
-    color: #888;
-}
-
-.footer-copyright {
-    text-align: center;
-    font-size: 12px;
-    color: #555;
-    padding-top: 20px;
-    border-top: 1px solid #1f1f1f;
-}
-
-/* スマホ対応 */
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-}
         /* Wiki系装飾 */
         .wiki-input, .wiki-textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: var(--input-bg); color: var(--black); font-size: 16px; margin-bottom: 15px; }
         .wiki-textarea { height: 250px; resize: vertical; line-height: 1.6; }
@@ -244,7 +165,7 @@ footer {
 </head>
 <body class="captcha-locked">
 
-        <!-- 🔒 サイト起動時のBOT対策用モーダル表示 -->
+    <!-- 🔒 サイト起動時のBOT対策用モーダル表示 -->
     <div id="captcha-overlay">
         <div class="captcha-box">
             <h3>BOT対策認証</h3>
@@ -261,7 +182,7 @@ footer {
     <header>
         <div class="header-nav-trigger" onclick="toggleMainPage('home')">
             <div id="logo"></div>
-            <h1>MenEarth S4.</h1>
+            <h1>MenEarth S3</h1>
             <span id="mode-badge">HOME</span>
         </div>
     </header>
@@ -270,8 +191,8 @@ footer {
         <div id="page-home">
             <section id="top">
                 <div id="top-text-content">
-                    <h1>MenEarth S4.</h1>
-                    <h4 style="color: #ccc;">Created by: Kuwagata. 非公式公認ホームページ</h4>
+                    <h1>MenEarth</h1>
+                    <h4 style="color: #ccc;">Created by: Mikancat10. 非公式公認ホームページ</h4>
                     <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラ(統合版)での国家建設、世界征服</h3>
                     <!-- 💡 サーバー人数表示エリアを追加 -->
                     <div class="server-status-container">
@@ -292,7 +213,7 @@ footer {
             <section class="section-flex" style="background-color: var(--grey);">
                 <div class="left-text">
                     <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
-                    <p>麺アースでは民度が高く、プレイヤー同士の交流が<br>活発です。更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れてみてください！</p>
+                    <p>麺アースでは民度が高く、プレイヤー同士の交流が活発です。<br>更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れたみてください！</p>
                 </div>
                 <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
                     <img src="https://i.imgur.com/qNJNk24.png" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;">
@@ -315,17 +236,6 @@ footer {
                 </div>
             </section>
 
-            <section class="section-flex" style="background-color: var(--grey);">
-                <div class="left-text">
-                    <h1>MenEarth宣伝動画</h1>
-                    <p>右の動画をご覧ください→<br><br><br><br><br><br><br><br><br><br></p>
-                </div>
-                <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
-                    <video src="画面録画 2026-08-21 141133.mp4" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;" controls>
-                    </video>
-                </div>
-            </section>
-
             <section id="more">
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h2>麺アースの概要</h2>
@@ -338,11 +248,7 @@ footer {
             </section>
         </div>
 
-        
-
         <div id="page-wiki" style="display: none;">
-            
-            
             <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h2>MenEarth 共有Wiki</h2>
@@ -442,286 +348,9 @@ footer {
                 </div>
             </section>
         </div>
-
-<div id="page-terms" style="display: none;">
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="max-width: 900px; margin: 0 auto;">
-                    <h2 style="text-align: center; margin-bottom: 20px;">麺 Earth 統一利用規約（包括的統合版）</h2>
-                    
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                    </div>
-
-                    <div style="color: #ccc; line-height: 1.8; font-size: 14px; background: #1a1a1a; padding: 30px; border-radius: 8px; border: 1px solid #333;">
-                        
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 1 章 総則</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（目的および本規約の適用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>本規約は、Minecraft サーバー「麺 Earth」（以下「本サーバー」）および本サーバー内で提供する一切のサービス（以下「本サービス」）の利用条件を定めるものです。</li>
-                            <li>本規約は、本サーバーの秩序維持、安全確保、および全ユーザー間の公平性を確保することを目的とします。</li>
-                            <li>ユーザーは、本サーバー（Minecraft）に接続し、または公式 Discord、LINE オープンチャット、ウェブサイト等の関連コミュニティに参加した時点で、本規約の全条項に同意したものとみなします。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（規約の構成・改定）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>本規約は章立てで構成され、運営が必要と判断した場合、ユーザーの個別の同意を得ることなく、いつでも内容の変更、追加、廃止を行うことができます。</li>
-                            <li>規約の改定は、サーバー内、Discord、または公式コミュニティ上での告知をもって効力を生じます。変更後は、告知時に定める時点から適用され、改定後に本サービスを利用したユーザーは、変更後の規約に同意したものとみなされます。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（用語の定義）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>「管理権限者」：サーバーの所有者および運営スタッフ。秩序維持のための最終的な判断が権限を有します。</li>
-                            <li>「ユーザー」：本サービスにアクセスするすべての個人。</li>
-                            <li>「警告」：違反行為に対する公式な注意喚起。記録として保持されます。</li>
-                            <li>「ミュート」：チャット発言やコマンド使用を一定期間制限する措置。</li>
-                            <li>「期限 BAN」：定められた期間（7日、30日、90日等）、接続を禁止する措置。</li>
-                            <li>「永久 BAN」：期間の定めなく、将来にわたって一切の接続を禁止する措置。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 2 章 コミュニティ規範と発言（Discord・LINE・ゲーム内）</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（外部サービスへの適用範囲）</h4>
-                        <p style="margin-bottom: 15px;">本規約は、サーバー内のゲームプレイだけでなく、公式 Discord、LINE オープンチャット、および関連するすべての外部コミュニティに適用されます。各プラットフォームの規約（LINE 利用規約等）と併せて、本規約が優先的に適用されるものとします。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（管理権限者の指示遵守）</h4>
-                        <p style="margin-bottom: 15px;">ユーザーは、ゲーム内外を問わず、管理権限者の指示、裁定、誘導に従わなければなりません。これに反抗し、運営業務を妨害する行為は処分の対象となります。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（禁止される発言・コンテンツ）</h4>
-                        <p>以下の行為を、チャット、看板、本・羽ペン、Discord、LINE オープンチャット等のあらゆる媒体で禁止します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>不適切な表現：挑発、暴言、差別的発言（人種、性別、特定の機種利用者への差別等）、過度な下ネタ（R18表現）、公序良俗に反する内容。また、Discord内で中指スタンプその他不適切だと思われるスタンプを禁止します。</li>
-                            <li>スパム行為：意味のない文字列の連投、コマンドの乱用、特定の単語の繰り返しによるチャット欄の占拠。</li>
-                            <li>有害コンテンツ：ウイルス、マルウェア、詐欺サイトへのリンク、ブラウザクラッシャー（GIF等を含む）の送信。</li>
-                            <li>個人情報の保護：自分または他人の本名、住所、電話番号、SNS アカウント、顔写真等の個人情報を、本人の同意の有無を問わず公開・拡散する行為。</li>
-                            <li>政治・宗教：特定の宗教、政党、団体を過度に象徴するものの建築、または布教・扇動行為。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（個人間トラブルの原則）</h4>
-                        <p style="margin-bottom: 15px;">個人間の紛争、口論、いざこざは、原則として当事者間で解決するものとします。ただし、サーバーの安全確保や規約違反が認められる場合、運営は最小限の介入を行う権利を留保します。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 3 章 信用・需要の不当な毀損と扇動の禁止</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（解決済み事案の取扱い）</h4>
-                        <p style="margin-bottom: 15px;">「解決済み事案」とは、事実確認が行われ、運営による処置、謝罪、是正、または公式な告知が完了した事案を指します。これらの事案を、正当な目的なく蒸し返し、サーバーの社会的評価を低下させる目的で反復・継続的に取り上げる行為（再燃・再拡散）を禁止します。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（組織的扇動の禁止）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>他者を動員したタグ運動、外部サーバーや SNS、掲示板等での呼び込み、同趣旨の反復投稿により、本サーバーの秩序を乱し、炎上や不買（利用停止）を誘導する行為を禁止します。</li>
-                            <li>企画立案者だけでなく、実行者や執拗な参加者も共犯的関与として処分の対象となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（ネガティブキャンペーン）</h4>
-                        <p style="margin-bottom: 15px;">虚偽の事実の摘示、断定的誇張、恣意的なスクリーンショットの切り取り、誤解を誘う編集動画の公開、レビュー荒らし等により、本サービスの信用や需要を不当に害する行為を禁止します。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 4 章 ゲーム内行為および Earth 固有ルール</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（大規模地形改変の制限）</h4>
-                        <p>環境保護と景観維持のため、以下の基準を設けます。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>禁止例：広範囲の露天掘り、幅 20m（20ブロック）以上の水域（湖・川・海）の埋立。</li>
-                            <li>許容例：戦艦・客船の建造、通路の架橋、石油コンビナート等の海上インフラ、元の海岸線から 40m 以内の護岸工事。</li>
-                            <li>処分：違法建築の撤去および原状回復を命じます。従わない場合は運営により強制削除および BAN を行います。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（サーバー負荷行為）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>故意にチャンク読み込みを急増させる行為、無意味な大量パケット送信、過剰なクロック回路・ホッパー・レッドストーン装置の設置を禁止します。</li>
-                            <li>意図せず高負荷が発生している場合、運営の改善要請に従い、装置の停止または撤去を行わなければなりません。</li>
-                            <li>特定のチャンクを読み込ませる（チャンクローダー的なもの）を使用を禁止します。</li>
-                            <li>大量の TNT を連続して投下する装置、飛行しながら TNT 等を散布する装置（爆撃機）、その他運営がこれに類すると判断する兵器の使用・建造を禁止します。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（バグ・不正利用の禁止）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>バグ・グリッチ：ゲームの不具合や仕様外の挙動（アイテム複製/デュープ、TNT 複製、0-tick 等）を利用して利益を得る行為を禁止します。発見時は速やかに運営へ報告する義務があります。</li>
-                            <li>チート・改造：不正改造クライアント（Horion 等）、透過テクスチャ（X-ray）、HP 表示、マップ表示、ヒットボックス表示、Freecam 等の、バニラ環境で得られない情報を取得する手段を一切禁止します。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（自動化・マクロ・放置）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>全鯖共通禁止：外部ツール、マクロ、オートクリック、AI BOT、入力を固定する重り等による自動化を禁止します。</li>
-                            <li>資源 1/2 鯖の特例：放置（AFK）自体は許可されます。ただし、AFK キック（自動切断）を回避するための機構（自動移動、定期入力等）全般を禁止します。</li>
-                            <li>許可される装置：サトウキビ自動収穫機、玄武岩生成、自動釣り機（竿の操作は手動）、クラフターを用いた自動クラフト、丸石製造機、自動仕分け機。</li>
-                            <li>資源鯖のシード値などからサイトを利用し、村やその他の特定の物を見つける行為を禁ずる。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 5 条（荒らし・窃盗・土地利用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Earth 領土内：他国の建築物破壊、チェストからの窃盗、家畜（エンティティ）のキル、スポーン地点の封鎖を厳禁とします。</li>
-                            <li>隣接地の保護：他国領土の境界から 3 チャンク以内において、嫌がらせと判断される建築や地形破壊を行ってはなりません。また、荒野においても荒らしや破壊、マグマの設置などを行ったと見なされますと、規則違反となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 6 条（PK行為のルール）</h4>
-                        <p>PK（Player Kill）とは、他のプレイヤーに攻撃を行い、死亡やアイテムロスト等の影響を与える行為を指します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>プレイヤー間で同意がある場合、PK自体は許可されますが、以下の行為は禁止です：
-                                <ul style="margin-left: 20px;">
-                                    <li>キルログを利用した過度な荒らし（ログが連続して大量に流れる等）</li>
-                                    <li>同意を得ていないのにも関わらず同意を得たと偽る行為</li>
-                                </ul>
-                            </li>
-                            <li>過度なPK（キルログが過剰に流れるような行為）は、同意の有無にかかわらず処分の対象となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 7 条（土地に関するルール）</h4>
-                        <p>飛び地は認めますが以下の行為を禁止します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>他国または他プレイヤーの領土を囲む形で領土を取得する行為。また、不適切な領土の取り方（アウトポスト・他国の領土進行を不可能にする）</li>
-                            <li>自国領土の周囲を囲み、その内部を新たに自国領として主張する行為。</li>
-                            <li>違反時の処分は原則として以下の段階で適用されます：<br>警告 → 一定期間BAN → 永久BAN</li>
-                            <li>PK違反の報告時に、スクリーンショットや動画の提出は任意です。ただし、提出した場合は相手が処分される可能性が高くなります。</li>
-                            <li>ネザーやエリトラ、移動手段を問わず様々な方法で遠い場所へ行き、想定されていないフラットワールドのような場所へ行き建築や領土設定、トラップなどを建設することを一切禁じます。</li>
-                            <li>海岸から10チャンク以上離れた海域において、領土の取得、建築物の建設、トラップの設置、拠点化その他これらに類する行為を禁止します。発見次第、運営から撤去命令が下されます。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 5 章 アカウント管理とプライバシー</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（なりすましの禁止）</h4>
-                        <p style="margin-bottom: 15px;">他ユーザー、実在の有名人、または運営スタッフを詐称する行為を禁止します。また、アカウントの譲渡、売買、共有も一切認められません。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データ保持）</h4>
-                        <p style="margin-bottom: 15px;">運営は、処罰記録、チャットログ、行動ログを、サービスの安全運営に必要な期間保持します。ユーザーは、本人確認が可能な範囲で、自己のデータの開示・訂正を求めることができます。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（複数のアカウントの利用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Discordの複数アカウントの所有を認めますが、なりすまし・処罰回避・別人を装う行為を禁じます。</li>
-                            <li>Minecraftにおいては、運営に了承なくサブアカウントを利用する事を禁じます。</li>
-                            <li>外出先や、データ損失、アカウントを使用出来なくなった、等の運営に認められる特別な事情のある場合は事前に速やかに連絡等すること。</li>
-                            <li>サブアカウントを使う公平性を損なう行為（投票・チャンク読み込み・処罰回避等)を一律禁止にします。</li>
-                            <li>また、Discord・LINE・Minecraftでの違反が見つかった場合、全てのアカウントを処罰します。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 6 章 包括的禁止事項と即時永久 BAN</h3>
-                        <p>以下の項目に該当する行為は、事前の警告なく即時永久 BAN となる重大違反とみなします。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>チートツールの使用：PvP 改造、透過系ツール、ハッククライアント。</li>
-                            <li>ネットワーク攻撃：DoS/DDoS 攻撃、サーバー脆弱性の悪用。</li>
-                            <li>認証回避：BAN 回避を目的とした別アカウント、VPN、プロキシの使用。</li>
-                            <li>アカウント窃用：他者のアカウントへの不正アクセス。</li>
-                            <li>法令違反：日本国内法に抵触するあらゆる行為。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 7 章 処罰基準と異議申立</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（処罰の原則）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>処罰は原則として「警告 → ミュート → タイム BAN → 永久 BAN」の順に段階的に適用されます。ただし、行為の悪質性、重大性、反復性、およびサーバーに与える影響度を鑑み、管理権限者の裁量により段階を飛ばして適用することができます。</li>
-                            <li>処分内容（期間や範囲）の最終決定権は運営にあります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（異議申立の手続き）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>ユーザーは、不当な処分であると考える場合、処分告知日から 7 日以内に公式 Discord の「チケット」を通じて異議を申し立てることができます。</li>
-                            <li>申立時には、プレイヤー名、XUID、処分の詳細、および主張を裏付ける証拠（未加工のスクリーンショットや動画）を提出する必要があります。</li>
-                            <li>期限を過ぎた申立、または同一事案での重複したチケット作成は受理されません。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 8 章 サービス提供・免責事項</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（停止・中断）</h4>
-                        <p style="margin-bottom: 15px;">運営は、定期的にワールドのバックアップを行いますが、システム保守、アップデート、サーバー攻撃への対応、または天災等の不可抗力により、予告なくサービスの一部または全部を停止・中断することがあります。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データの消失）</h4>
-                        <p style="margin-bottom: 15px;">不具合、攻撃、メンテナンス、負荷等により、データが消失、または特定時点まで巻き戻る（ロールバック）ことがあります。これに伴うユーザーの損失（アイテム、建築物、時間等）について、運営は特定の場合によるもの以外はの補償を行いません。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（知的財産権）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>サーバー内のテキスト、設定、プログラム、公式画像等の権利は運営に帰属します。</li>
-                            <li>ユーザーが作成した建築物等の権利はユーザーに帰属しますが、運営はサーバーの広報・紹介目的の範囲内で、これらを無償かつ自由に利用（撮影、動画公開等）できるものとします。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（無保証・責任制限）</h4>
-                        <p style="margin-bottom: 15px;">本サービスは「現状有姿」で提供され、その完全性、正確性、安全性についていかなる保証も行いません。ユーザー間での物品売買や契約は自己責任とし、運営は一切関与しません。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 9 章 準拠法・裁判管轄</h3>
-                        <p style="margin-bottom: 15px;">本規約の解釈は日本法を準拠法とし、規約の解釈および裁定に関する最終的な決定権は運営に帰属します。</p>
-
-                    </div>
-
-                    <div style="margin-top: 40px; text-align: center;">
-                        <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                    </div>
-
-                </div>
-            </section>
-        </div>
-
-        <!-- プライバシーポリシーページ -->
-        <div id="page-privacy" style="display: none;">
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <h2 style="text-align: center; margin-bottom: 30px;">プライバシーポリシー</h2>
-                    <div style="color: #ccc; line-height: 1.8; font-size: 15px;">
-                        <p style="margin-bottom: 20px;">MenEarth（以下「当サーバー」）は、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシーを定めます。</p>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第1条（収集する情報）</h3>
-                        <p>当サービスでは、GoogleログインおよびDiscord認証等を通じて、以下の情報を取得する場合があります。</p>
-                        <ul style="margin-left: 20px; margin-top: 8px;">
-                            <li>ユーザー識別子（UID）</li>
-                            <li>表示名およびプロフィール画像情報</li>
-                            <li>メールアドレス（管理者識別用）</li>
-                        </ul>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第2条（情報の利用目的）</h3>
-                        <p>取得した情報は、以下の目的のためにのみ利用します。</p>
-                        <ul style="margin-left: 20px; margin-top: 8px;">
-                            <li>Wikiおよびイベントコンテンツの投稿者識別・編集権限の管理</li>
-                            <li>BOT対策およびスパム防止</li>
-                            <li>サービス運営上の連絡および不正利用防止</li>
-                        </ul>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第3条（第三者提供の制限）</h3>
-                        <p>法令に基づく場合を除き、ユーザーの同意を得ることなく第三者に個人情報を提供することはありません。</p>
-
-                        <div style="margin-top: 40px; text-align: center;">
-                            <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
     </main>
 
-<footer>
-    <div class="footer-container">
-        <!-- 左側エリア -->
-        <div class="footer-left">
-            <!-- 上：利用規約とプライバシーポリシー -->
-            <div>
-                <div class="footer-title">規約・ポリシー</div>
-<!-- フッターの「利用規約」「プライバシーポリシー」部分 -->
-<div class="footer-links-inline">
-    <a href="javascript:void(0)" onclick="toggleMainPage('terms')">利用規約</a>
-    <a href="javascript:void(0)" onclick="toggleMainPage('privacy')">プライバシーポリシー</a>
-</div>
-            </div>
-            
-            <!-- 下：ページ一覧 -->
-            <div>
-                <div class="footer-title">ページ一覧</div>
-                <ul class="footer-links-list">
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('home')">ホーム</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('wiki')">共有Wiki</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('event')">イベント情報</a></li>
-                </ul>
-            </div>
-        </div>
- 
-        <!-- 右側エリア：サーバー紹介文 -->
-        <div class="footer-right">
-            <div class="footer-title">MenEarth S4 について</div>
-            <p class="footer-desc">
-                MenEarth（麺アース）は、Minecraft統合版で国家建設や世界征服を楽しめるマルチサーバーです。プレイヤー同士の交流が活発で、定期的なイベント開催や迅速な運営サポートを行っています。
-            </p>
-        </div>
-    </div>
-
-    <!-- コピーライト -->
-    <div class="footer-copyright">
-        非公式公認的MenEarthのHomePages Copyright © 2026 MenEarth All rights reserved.
-    </div>
-</footer>
+    <footer><p>非公式公認的MenEarthのHomePages Copyright © 2026 MenEarth All rights reserved.</p></footer>
 
     <!-- 🔒 BOT対策CAPTCHA用のスクリプト -->
     <script>
@@ -838,47 +467,36 @@ footer {
         });
 
         // 💡 三要素（HOME / WIKI / EVENT）の切り替えに対応できるように関数を拡張
-// 三要素＋規約・ポリシーの切り替えに対応
-window.toggleMainPage = function(targetMode) {
-    const h = document.getElementById('page-home');
-    const w = document.getElementById('page-wiki');
-    const e = document.getElementById('page-event');
-    const t = document.getElementById('page-terms');
-    const p = document.getElementById('page-privacy');
-    const b = document.getElementById('mode-badge');
+        window.toggleMainPage = function(targetMode) {
+            const h = document.getElementById('page-home');
+            const w = document.getElementById('page-wiki');
+            const e = document.getElementById('page-event');
+            const b = document.getElementById('mode-badge');
 
-    // いったん全部非表示
-    if (h) h.style.display = 'none';
-    if (w) w.style.display = 'none';
-    if (e) e.style.display = 'none';
-    if (t) t.style.display = 'none';
-    if (p) p.style.display = 'none';
+            // いったん全部非表示
+            h.style.display = 'none';
+            w.style.display = 'none';
+            e.style.display = 'none';
 
-    if (!targetMode) {
-        targetMode = 'home';
-    }
+            // 引数がない、または 'home' の場合はトグル動作（既存の挙動の維持用）
+            if (!targetMode) {
+                if (h.style.display !== 'none') targetMode = 'wiki';
+                else targetMode = 'home';
+            }
 
-    if (targetMode === 'wiki') {
-        if (w) w.style.display = 'block';
-        b.innerText = "WIKI";
-        loadWikiPages();
-    } else if (targetMode === 'event') {
-        if (e) e.style.display = 'block';
-        b.innerText = "EVENT";
-        loadEventPages();
-    } else if (targetMode === 'terms') {
-        if (t) t.style.display = 'block';
-        b.innerText = "TERMS";
-        window.scrollTo(0, 0);
-    } else if (targetMode === 'privacy') {
-        if (p) p.style.display = 'block';
-        b.innerText = "PRIVACY";
-        window.scrollTo(0, 0);
-    } else {
-        if (h) h.style.display = 'block';
-        b.innerText = "HOME";
-    }
-}
+            if (targetMode === 'wiki') {
+                w.style.display = 'block';
+                b.innerText = "WIKI";
+                loadWikiPages();
+            } else if (targetMode === 'event') {
+                e.style.display = 'block';
+                b.innerText = "EVENT";
+                loadEventPages();
+            } else {
+                h.style.display = 'block';
+                b.innerText = "HOME";
+            }
+        }
 
         function parseWikiText(text) {
             if (!text) return "";
