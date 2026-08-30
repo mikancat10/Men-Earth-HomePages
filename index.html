@@ -1,1207 +1,1430 @@
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>MenEarth S4.</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp?size=100">
-    <meta name="description" content="MenEarth S4.は、Minecraft統合版での国家建設・国家運営をテーマにした非公式公認サーバーです。民度の高いプレイヤー同士の交流が活発で、イベントも開催されています。">
-    <meta name="keywords" content="麺アース, MenEarth, Minecraft, 統合版, サーバー, 国家建設, 国家運営, イベント, 非公式公認, マイクラサーバー, マイクラ,">
-    <meta name="author" content="Mikancat10, Mikancat1045, kuwakuwa53577, kuwagata53577.">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp?size=100"
+    />
+    <meta
+      name="description"
+      content="MenEarth S4.は、Minecraft統合版での国家建設・国家運営をテーマにした非公式公認サーバーです。民度の高いプレイヤー同士の交流が活発で、イベントも開催されています。"
+    />
+    <meta
+      name="keywords"
+      content="麺アース, MenEarth, Minecraft, 統合版, サーバー, 国家建設, 国家運営, イベント, 非公式公認, マイクラサーバー, マイクラ,"
+    />
+    <meta name="author" content="Mikancat10, Mikancat1045, kuwakuwa53577, kuwagata53577." />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;500&family=Source+Code+Pro:wght@400&display=swap');
-        :root { --white: #111; --grey: #1a1a1a; --black: #fff; --input-bg: #222; }
-        * { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { background-color: var(--grey); color: var(--black); overflow-x: hidden; }
-        
-        /* 🔒 認証が完了するまでページスクロールを禁止 */
-        body.captcha-locked { overflow: hidden; }
+              @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;500&family=Source+Code+Pro:wght@400&display=swap');
+              :root { --white: #111; --grey: #1a1a1a; --black: #fff; --input-bg: #222; }
+              * { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+              body { background-color: var(--grey); color: var(--black); overflow-x: hidden; }
 
-        /* 🔒 全画面BOT対策モーダルのスタイル */
-        #captcha-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(10px);
-            z-index: 99999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .captcha-box {
-            background: #181818;
-            border: 1px solid #333;
-            padding: 30px 25px;
-            border-radius: 20px;
-            max-width: 420px;
-            width: 100%;
-            text-align: center;
-            color: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .captcha-box h3 { font-size: 20px; margin-bottom: 8px; font-weight: 500; }
-        .captcha-box p { font-size: 13px; color: #aaa; margin-bottom: 15px; }
-        .captcha-img-wrapper {
-            background: #fff;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 140px;
-        }
-        .captcha-box img {
-            max-width: 100%;
-            max-height: 180px;
-            object-fit: contain;
-        }
-        .captcha-box input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #444;
-            background: #222;
-            color: #fff;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 16px;
-            outline: none;
-        }
-        .captcha-box input[type="text"]:focus {
-            border-color: #fff;
-        }
-        .captcha-btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 30px;
-            border: none;
-            background: #fff;
-            color: #000;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-        .captcha-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-        #captcha-msg {
-            font-size: 13px;
-            margin-top: 12px;
-            min-height: 18px;
-        }
+              /* 🔒 認証が完了するまでページスクロールを禁止 */
+              body.captcha-locked { overflow: hidden; }
 
-        header { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: rgba(20, 20, 20, 0.85); border-bottom: 1px solid #333; backdrop-filter: blur(15px); z-index: 9999; }
-        .header-nav-trigger { display: flex; align-items: center; cursor: pointer; user-select: none; padding: 5px 15px; border-radius: 20px; }
-        #logo { height: 30px; width: 30px; background-image: url('https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp'); background-size: cover; border-radius: 50%; margin-right: 12px; }
-        header h1 { font-size: 18px; font-weight: 100; letter-spacing: 2px; }
-        #mode-badge { font-size: 10px; background: #fff; color: #000; padding: 2px 8px; border-radius: 10px; margin-left: 10px; font-weight: 500; }
+              /* 🔒 全画面BOT対策モーダルのスタイル */
+              #captcha-overlay {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100vw;
+                  height: 100vh;
+                  background-color: rgba(0, 0, 0, 0.92);
+                  backdrop-filter: blur(10px);
+                  z-index: 99999;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 20px;
+              }
+              .captcha-box {
+                  background: #181818;
+                  border: 1px solid #333;
+                  padding: 30px 25px;
+                  border-radius: 20px;
+                  max-width: 420px;
+                  width: 100%;
+                  text-align: center;
+                  color: #fff;
+                  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+              }
+              .captcha-box h3 { font-size: 20px; margin-bottom: 8px; font-weight: 500; }
+              .captcha-box p { font-size: 13px; color: #aaa; margin-bottom: 15px; }
+              .captcha-img-wrapper {
+                  background: #fff;
+                  border-radius: 12px;
+                  padding: 10px;
+                  margin-bottom: 15px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  min-height: 140px;
+              }
+              .captcha-box img {
+                  max-width: 100%;
+                  max-height: 180px;
+                  object-fit: contain;
+              }
+              .captcha-box input[type="text"] {
+                  width: 100%;
+                  padding: 12px;
+                  border-radius: 10px;
+                  border: 1px solid #444;
+                  background: #222;
+                  color: #fff;
+                  margin-bottom: 15px;
+                  text-align: center;
+                  font-size: 16px;
+                  outline: none;
+              }
+              .captcha-box input[type="text"]:focus {
+                  border-color: #fff;
+              }
+              .captcha-btn {
+                  width: 100%;
+                  padding: 12px;
+                  border-radius: 30px;
+                  border: none;
+                  background: #fff;
+                  color: #000;
+                  font-weight: 500;
+                  cursor: pointer;
+                  font-size: 15px;
+                  transition: 0.2s;
+              }
+              .captcha-btn:hover {
+                  opacity: 0.9;
+                  transform: scale(1.02);
+              }
+              #captcha-msg {
+                  font-size: 13px;
+                  margin-top: 12px;
+                  min-height: 18px;
+              }
 
-        main { margin-top: 50px; }
-        
-        /* 💡 トップセクションの背景画像設定 */
-        #top { 
-            height: calc(100vh - 50px); 
-            display: flex; 
-            flex-direction: column; 
-            text-align: center; 
-            justify-content: center; 
-            padding: 20px; 
-            /* 好きな画像URLに差し替える場合は下の 'https://...' の部分を書き換えてね */
-            background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('6952727e-f1be-4db6-8a7a-eb8ca881e492.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        
-        #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; color: #fff; }
-        .btn { display: inline-block; color: #000; background-color: #fff; margin: 15px 5px; padding: 12px 30px; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; font-weight: 500; transition: 0.3s; }
-        .btn:hover { transform: scale(1.05); opacity: 0.9; }
+              header { display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 50px; background-color: rgba(20, 20, 20, 0.85); border-bottom: 1px solid #333; backdrop-filter: blur(15px); z-index: 9999; }
+              .header-nav-trigger { display: flex; align-items: center; cursor: pointer; user-select: none; padding: 5px 15px; border-radius: 20px; }
+              #logo { height: 30px; width: 30px; background-image: url('https://cdn.discordapp.com/icons/1450541062186864653/99b16ca88fdb6bc2b46cd600494d9f37.webp'); background-size: cover; border-radius: 50%; margin-right: 12px; }
+              header h1 { font-size: 18px; font-weight: 100; letter-spacing: 2px; }
+              #mode-badge { font-size: 10px; background: #fff; color: #000; padding: 2px 8px; border-radius: 10px; margin-left: 10px; font-weight: 500; }
 
-        /* 💡 サーバー人数表示用スタイルの追加 */
-        .server-status-container { margin-top: 20px; font-size: 18px; color: #fff; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #888; display: inline-block; }
-        .status-dot.online { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
-        .status-dot.offline { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
+              main { margin-top: 50px; }
 
-        #details { padding: 80px 10%; background-color: var(--white); }
-        .feature-container { display: flex; gap: 40px; margin-top: 40px; }
-        .feature-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-        .nav-item { padding: 20px; border: 1px solid #333; border-radius: 15px; cursor: pointer; transition: 0.3s; background: transparent; color: var(--black); }
-        .nav-item:hover { transform: translateX(10px); background: #222; }
-        .nav-item.active { background: #fff; color: #000; border-color: #fff; font-weight: 500; }
-        .feature-display { flex: 2; background: var(--grey); padding: 50px; border-radius: 30px; min-height: 400px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #222; }
+              /* 💡 トップセクションの背景画像設定 */
+              #top {
+                  height: calc(100vh - 50px);
+                  display: flex;
+                  flex-direction: column;
+                  text-align: center;
+                  justify-content: center;
+                  padding: 20px;
+                  /* 好きな画像URLに差し替える場合は下の 'https://...' の部分を書き換えてね */
+                  background-image: linear-gradient(rgba(17, 17, 17, 0.75), rgba(17, 17, 17, 0.75)), url('6952727e-f1be-4db6-8a7a-eb8ca881e492.png');
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  background-size: cover;
+                  background-position: center;
+                  background-repeat: no-repeat;
+              }
 
-        #more { padding: 80px 10%; background-color: var(--grey); }
-        #grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
-        .grid-box { background: var(--white); padding: 40px 20px; border-radius: 20px; text-align: center; border: 1px solid #222; }
-        .list-box { background: var(--white); margin-bottom: 10px; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; border: 1px solid #222; }
-        .section-flex { display: flex; height: 80vh; align-items: center; padding: 0 10%; }
-        .section-flex > div { width: 50%; }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-footer {
-    padding: 60px 10% 40px;
-    background-color: var(--white);
-    color: #888;
-    border-top: 1px solid #222;
-    font-size: 13px;
-}
+              #top h1 { font-size: 12vmin; line-height: 1; margin-bottom: 10px; color: #fff; }
+              .btn { display: inline-block; color: #000; background-color: #fff; margin: 15px 5px; padding: 12px 30px; border-radius: 30px; text-decoration: none; border: none; cursor: pointer; font-weight: 500; transition: 0.3s; }
+              .btn:hover { transform: scale(1.05); opacity: 0.9; }
 
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 40px;
-}
+              /* 💡 サーバー人数表示用スタイルの追加 */
+              .server-status-container { margin-top: 20px; font-size: 18px; color: #fff; display: flex; justify-content: center; align-items: center; gap: 10px; }
+              .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #888; display: inline-block; }
+              .status-dot.online { background-color: #4caf50; box-shadow: 0 0 8px #4caf50; }
+              .status-dot.offline { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
 
-.footer-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+              #details { padding: 80px 10%; background-color: var(--white); }
+              .feature-container { display: flex; gap: 40px; margin-top: 40px; }
+              .feature-nav { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+              .nav-item { padding: 20px; border: 1px solid #333; border-radius: 15px; cursor: pointer; transition: 0.3s; background: transparent; color: var(--black); }
+              .nav-item:hover { transform: translateX(10px); background: #222; }
+              .nav-item.active { background: #fff; color: #000; border-color: #fff; font-weight: 500; }
+              .feature-display { flex: 2; background: var(--grey); padding: 50px; border-radius: 30px; min-height: 400px; display: flex; flex-direction: column; justify-content: center; border: 1px solid #222; }
 
-.footer-right {
-    flex: 1;
-}
+              #more { padding: 80px 10%; background-color: var(--grey); }
+              #grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px; }
+              .grid-box { background: var(--white); padding: 40px 20px; border-radius: 20px; text-align: center; border: 1px solid #222; }
+              .list-box { background: var(--white); margin-bottom: 10px; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; border: 1px solid #222; }
+              .section-flex { display: flex; height: 80vh; align-items: center; padding: 0 10%; }
+              .section-flex > div { width: 50%; }
+              .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+              @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      footer {
+          padding: 60px 10% 40px;
+          background-color: var(--white);
+          color: #888;
+          border-top: 1px solid #222;
+          font-size: 13px;
+      }
 
-.footer-title {
-    color: var(--black);
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
+      .footer-container {
+          display: flex;
+          justify-content: space-between;
+          gap: 40px;
+          margin-bottom: 40px;
+      }
 
-.footer-links-inline {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+      .footer-left {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+      }
 
-.footer-links-inline a,
-.footer-links-list a {
-    color: #888;
-    text-decoration: none;
-    transition: color 0.2s;
-}
+      .footer-right {
+          flex: 1;
+      }
 
-.footer-links-inline a:hover,
-.footer-links-list a:hover {
-    color: var(--black);
-}
+      .footer-title {
+          color: var(--black);
+          font-size: 15px;
+          font-weight: 500;
+          margin-bottom: 10px;
+      }
 
-.footer-links-list {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    list-style: none;
-}
+      .footer-links-inline {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+      }
 
-.footer-desc {
-    line-height: 1.7;
-    color: #888;
-}
+      .footer-links-inline a,
+      .footer-links-list a {
+          color: #888;
+          text-decoration: none;
+          transition: color 0.2s;
+      }
 
-.footer-copyright {
-    text-align: center;
-    font-size: 12px;
-    color: #555;
-    padding-top: 20px;
-    border-top: 1px solid #1f1f1f;
-}
+      .footer-links-inline a:hover,
+      .footer-links-list a:hover {
+          color: var(--black);
+      }
 
-/* スマホ対応 */
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-}
-        /* Wiki系装飾 */
-        .wiki-input, .wiki-textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: var(--input-bg); color: var(--black); font-size: 16px; margin-bottom: 15px; }
-        .wiki-textarea { height: 250px; resize: vertical; line-height: 1.6; }
-        .wiki-display-content img { max-width: 100%; height: auto; border-radius: 12px; margin: 15px 0; display: block; border: 1px solid #333; }
-        .wiki-display-content ul { margin-left: 20px; margin-bottom: 15px; }
-        .wiki-display-content li { margin-bottom: 6px; line-height: 1.6; list-style-type: disc; color: #ddd; }
-        .wiki-separator { border: 1px solid #333; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #151515; width: 100%; }
-        .wiki-separator-title { background: #252525; padding: 12px 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
-        .wiki-separator-body { padding: 15px 20px; display: none; border-top: 1px solid #232323; background: #111; line-height: 1.6; color: #ccc; }
-        .wiki-separator.open .wiki-separator-body { display: block; }
-        .wiki-code-block { font-family: 'Source Code Pro', monospace; background: #0b0b0b; padding: 12px 18px; border-radius: 8px; border-left: 4px solid #fff; color: #a9ffb7; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; font-size: 14px; }
-        .wiki-help-box { background: #151515; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-top: 15px; font-size: 13px; color: #aaa; text-align: left; }
-        
-        .auth-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
-        
-        @media (max-width: 768px) { .feature-container { flex-direction: column; } #grid-container { grid-template-columns: 1fr; } .section-flex { flex-direction: column; height: auto !important; padding: 40px 10% !important; gap: 20px; } .section-flex > div { width: 100% !important; } }
+      .footer-links-list {
+          display: flex;
+          gap: 15px;
+          flex-wrap: wrap;
+          list-style: none;
+      }
+
+      .footer-desc {
+          line-height: 1.7;
+          color: #888;
+      }
+
+      .footer-copyright {
+          text-align: center;
+          font-size: 12px;
+          color: #555;
+          padding-top: 20px;
+          border-top: 1px solid #1f1f1f;
+      }
+
+      /* スマホ対応 */
+      @media (max-width: 768px) {
+          .footer-container {
+              flex-direction: column;
+              gap: 30px;
+          }
+      }
+              /* Wiki系装飾 */
+              .wiki-input, .wiki-textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: var(--input-bg); color: var(--black); font-size: 16px; margin-bottom: 15px; }
+              .wiki-textarea { height: 250px; resize: vertical; line-height: 1.6; }
+              .wiki-display-content img { max-width: 100%; height: auto; border-radius: 12px; margin: 15px 0; display: block; border: 1px solid #333; }
+              .wiki-display-content ul { margin-left: 20px; margin-bottom: 15px; }
+              .wiki-display-content li { margin-bottom: 6px; line-height: 1.6; list-style-type: disc; color: #ddd; }
+              .wiki-separator { border: 1px solid #333; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #151515; width: 100%; }
+              .wiki-separator-title { background: #252525; padding: 12px 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+              .wiki-separator-body { padding: 15px 20px; display: none; border-top: 1px solid #232323; background: #111; line-height: 1.6; color: #ccc; }
+              .wiki-separator.open .wiki-separator-body { display: block; }
+              .wiki-code-block { font-family: 'Source Code Pro', monospace; background: #0b0b0b; padding: 12px 18px; border-radius: 8px; border-left: 4px solid #fff; color: #a9ffb7; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; font-size: 14px; }
+              .wiki-help-box { background: #151515; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-top: 15px; font-size: 13px; color: #aaa; text-align: left; }
+
+              .auth-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+
+              @media (max-width: 768px) { .feature-container { flex-direction: column; } #grid-container { grid-template-columns: 1fr; } .section-flex { flex-direction: column; height: auto !important; padding: 40px 10% !important; gap: 20px; } .section-flex > div { width: 100% !important; } }
     </style>
-</head>
-<body class="captcha-locked">
-
-        <!-- 🔒 サイト起動時のBOT対策用モーダル表示 -->
+  </head>
+  <body class="captcha-locked">
     <div id="captcha-overlay">
-        <div class="captcha-box">
-            <h3>BOT対策認証</h3>
-            <p>サイトを閲覧するには、画像に書かれている文字を入力してください。</p>
-            <div class="captcha-img-wrapper">
-                <img id="captcha-img" src="" alt="CAPTCHA認証画像">
-            </div>
-            <input type="text" id="captcha-input" placeholder="文字を入力..." autocomplete="off">
-            <button type="button" class="captcha-btn" onclick="verifyCaptcha()">認証する</button>
-            <p id="captcha-msg"></p>
+      <div class="captcha-box">
+        <h3>BOT対策認証</h3>
+        <p>サイトを閲覧するには、画像に書かれている文字を入力してください。</p>
+        <div class="captcha-img-wrapper">
+          <img id="captcha-img" src="" alt="CAPTCHA認証画像" />
         </div>
+        <input type="text" id="captcha-input" placeholder="文字を入力..." autocomplete="off" />
+        <button type="button" class="captcha-btn" onclick="verifyCaptcha()">認証する</button>
+        <p id="captcha-msg"></p>
+      </div>
     </div>
-
     <header>
-        <div class="header-nav-trigger" onclick="toggleMainPage('home')">
-            <div id="logo"></div>
-            <h1>MenEarth S4.</h1>
-            <span id="mode-badge">HOME</span>
-        </div>
+      <div class="header-nav-trigger" onclick="toggleMainPage('home')">
+        <div id="logo"></div>
+        <h1>MenEarth S4.</h1>
+        <span id="mode-badge">HOME</span>
+      </div>
     </header>
-
     <main>
-        <div id="page-home">
-            <section id="top">
-                <div id="top-text-content">
-                    <h1>MenEarth S4.</h1>
-                    <h4 style="color: #ccc;">Created by: Kuwagata. 非公式公認ホームページ</h4>
-                    <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラ(統合版)での国家建設、世界征服</h3>
-                    <!-- 💡 サーバー人数表示エリアを追加 -->
-                    <div class="server-status-container">
-                        <span id="status-indicator" class="status-dot"></span>
-                        <span id="server-player-count">サーバー人数: 取得中...</span>
-                    </div>
-
-                    
-<!-- 既存のボタン周辺を以下のように書き換え、または追加 -->
-<div style="margin-top: 30px;">
-    <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
-    <button class="btn" onclick="toggleMainPage('wiki')" style="background: transparent; color: #fff; border: 1px solid #fff;">共有Wikiを開く</button>
-    <button class="btn" onclick="toggleMainPage('event')" style="background: #4caf50; color: #fff; border: none;">イベント情報</button>
-</div>
-                </div>
-            </section>
-
-            <section class="section-flex" style="background-color: var(--grey);">
-                <div class="left-text">
-                    <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
-                    <p>麺アースでは民度が高く、プレイヤー同士の交流が<br>活発です。更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れてみてください！</p>
-                </div>
-                <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
-                    <img src="https://i.imgur.com/qNJNk24.png" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;">
-                </div>
-            </section>
-
-            <section id="details">
-                <div style="text-align: center;">
-                    <h2>機能を詳しく見る</h2>
-                    <p style="color: #888; margin-top: 10px;">左のメニューを選択して、詳細を切り替えます。</p>
-                </div>
-                <div class="feature-container">
-                    <div class="feature-nav" id="nav-buttons"></div>
-                    <div class="feature-display" id="display-panel">
-                        <div id="display-content" class="fade-in">
-                            <h1 id="display-title" style="font-size: 36px; margin-bottom: 15px;">機能を選択</h1>
-                            <p id="display-desc" style="font-size: 18px; color: #888; line-height: 1.6;">ここに説明が表示されます。</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section-flex" style="background-color: var(--grey);">
-                <div class="left-text">
-                    <h1>MenEarth宣伝動画(作成中)</h1>
-                    <p>右の動画をご覧ください→<br><br><br><br><br><br><br><br><br><br></p>
-                </div>
-                <div style="background: hsl(0, 0%, 13%); height: 300px; border-radius: 20px; width: 50%;">
-                    <video src="" alt="サーバーの様子" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;" controls>
-                    </video>
-                </div>
-            </section>
-
-            <section id="more">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2>麺アースの概要</h2>
-                    <div style="margin-top: 20px;">
-                        <button class="btn" onclick="renderView('grid')" id="btn-grid">グリッド</button>
-                        <button class="btn" onclick="renderView('list')" id="btn-list" style="background: transparent; color: var(--black); border: 1px solid var(--black);">リスト</button>
-                    </div>
-                </div>
-                <div id="view-target" class="fade-in"></div>
-            </section>
-        </div>
-
-        
-
-        <div id="page-wiki" style="display: none;">
-            
-            
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2>MenEarth 共有Wiki</h2>
-                    <div id="auth-status-container" class="auth-buttons">
-                        <button id="btn-google-login" class="btn" style="background:#ea4335; color:#fff; padding: 8px 20px; font-size:14px; margin: 0 5px;">Googleでログイン</button>
-                        <span id="user-info" style="color:#aaa; font-size:14px; display:none;"></span>
-                        <button id="btn-discord-logout" class="btn" style="background:#f44; color:#fff; padding: 4px 12px; font-size:12px; display:none; margin: 0 5px;">ログアウト</button>
-                    </div>
-                </div>
-
-                <div class="feature-container">
-                    <div class="feature-nav">
-                        <input type="text" id="wiki-search" placeholder="ページを検索..." class="wiki-input" style="margin-bottom: 10px;">
-                        <div id="wiki-page-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-                        <hr style="border-color: #333; margin: 10px 0;">
-                        <button id="btn-create-page" class="btn" onclick="prepareNewPage()" style="margin: 0; width: 100%; display:none;">＋ 新しいページを作る</button>
-                        <p id="login-alert-text" style="color:#888; font-size:12px; text-align:center;">※ ページの作成・編集にはログインが必要です</p>
-                    </div>
-
-                    <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
-                        <div id="wiki-view-mode" style="width: 100%; text-align: left;">
-                            <h1 id="wiki-title" style="font-size: 32px; margin-bottom: 15px;">Wikiへようこそ</h1>
-                            <div id="wiki-author" style="font-size:12px; color:#666; margin-bottom:10px;"></div>
-                            <div id="wiki-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">左側からページを選択してください。</div>
-                            <div style="margin-top: 30px;">
-                                <button id="btn-wiki-edit" class="btn" style="display: none; margin: 0;" onclick="enableEditMode()">このページを編集する</button>
-                                <p id="edit-lock-msg" style="color:#f44; font-size:13px; display:none; margin-top:10px;">⚠️ このページは作成者本人しか編集できません。</p>
-                            </div>
-                        </div>
-
-                        <div id="wiki-edit-mode" style="display: none; width: 100%;">
-                            <input type="text" id="edit-wiki-title" placeholder="ページタイトル" class="wiki-input" style="font-size: 20px; font-weight: 500;">
-                            <textarea id="edit-wiki-content" placeholder="本文を入力してください..." class="wiki-textarea"></textarea>
-                            
-                            <div class="wiki-help-box">
-                                <strong>💡 書き方ルール:</strong><br>
-                                🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]<br>
-                                🔹 リスト: 行頭に <code style="color:#fff">* </code> | 折りたたみ: <code style="color:#fff">[title:題名]本文[end]</code> | 枠線: <code style="color:#fff">```文字```</code>
-                            </div>
-
-                            <div style="margin-top: 20px; text-align: left;">
-                                <button class="btn" onclick="saveWikiPage()" style="margin-left: 0;">保存する</button>
-                                <button class="btn" style="background: transparent; color: var(--black); border: 1px solid var(--black);" onclick="cancelEdit()">キャンセル</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- 💡 追加: イベントページ -->
-        <div id="page-event" style="display: none;">
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2>MenEarth イベント情報</h2>
-                    <p style="color: #888; margin-top: 10px;">サーバー内で開催される最新のイベント情報です！</p>
-                </div>
-
-                <div class="feature-container">
-                    <!-- 左側：イベント一覧と管理者用ボタン -->
-                    <div class="feature-nav">
-                        <div id="event-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-                        <hr id="event-admin-hr" style="border-color: #333; margin: 10px 0; display: none;">
-                        <button id="btn-create-event" class="btn" onclick="prepareNewEvent()" style="margin: 0; width: 100%; display: none; background: #4caf50; color: #fff;">＋ 新しいイベントを投稿</button>
-                    </div>
-
-                    <!-- 右側：イベント詳細 or 編集画面 -->
-                    <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
-                        <!-- 閲覧モード -->
-                        <div id="event-view-mode" style="width: 100%; text-align: left;">
-                            <h1 id="event-title" style="font-size: 32px; margin-bottom: 15px;">イベントを選択</h1>
-                            <div id="event-date" style="font-size:14px; color:#aaa; margin-bottom:15px;"></div>
-                            <div id="event-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">左側からイベントを選択してください。</div>
-                            <div style="margin-top: 30px;">
-                                <button id="btn-event-edit" class="btn" style="display: none; margin: 0;" onclick="enableEventEditMode()">このイベントを編集する</button>
-                            </div>
-                        </div>
-
-                        <!-- 編集・新規作成モード -->
-                        <div id="event-edit-mode" style="display: none; width: 100%;">
-                            <input type="text" id="edit-event-title" placeholder="イベントタイトル" class="wiki-input" style="font-size: 20px; font-weight: 500;">
-                            <input type="text" id="edit-event-date" placeholder="開催日時 (例: 2026年8月1日 21:00〜)" class="wiki-input" style="font-size: 16px;">
-                            <textarea id="edit-event-content" placeholder="イベントの詳細やルール、参加条件などを入力してください（Wikiと同じルールで太字や画像[img:URL]が使えます）" class="wiki-textarea"></textarea>
-                            
-                            <div class="wiki-help-box">
-                                <strong>💡 書き方ルール:</strong><br>
-                                🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]<br>
-                                🔹 リスト: 行頭に <code style="color:#fff">* </code> | 折りたたみ: <code style="color:#fff">[title:題名]本文[end]</code>
-                            </div>
-
-                            <div style="margin-top: 20px; text-align: left;">
-                                <button class="btn" onclick="saveEventPage()" style="margin-left: 0; background: #fff; color: #000;">イベントを保存</button>
-                                <button class="btn" style="background: transparent; color: var(--black); border: 1px solid var(--black);" onclick="cancelEventEdit()">キャンセル</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-<div id="page-terms" style="display: none;">
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="max-width: 900px; margin: 0 auto;">
-                    <h2 style="text-align: center; margin-bottom: 20px;">麺 Earth 統一利用規約（包括的統合版）</h2>
-                    
-                    <div style="text-align: center; margin-bottom: 30px;">
-                        <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                    </div>
-
-                    <div style="color: #ccc; line-height: 1.8; font-size: 14px; background: #1a1a1a; padding: 30px; border-radius: 8px; border: 1px solid #333;">
-                        
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 1 章 総則</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（目的および本規約の適用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>本規約は、Minecraft サーバー「麺 Earth」（以下「本サーバー」）および本サーバー内で提供する一切のサービス（以下「本サービス」）の利用条件を定めるものです。</li>
-                            <li>本規約は、本サーバーの秩序維持、安全確保、および全ユーザー間の公平性を確保することを目的とします。</li>
-                            <li>ユーザーは、本サーバー（Minecraft）に接続し、または公式 Discord、LINE オープンチャット、ウェブサイト等の関連コミュニティに参加した時点で、本規約の全条項に同意したものとみなします。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（規約の構成・改定）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>本規約は章立てで構成され、運営が必要と判断した場合、ユーザーの個別の同意を得ることなく、いつでも内容の変更、追加、廃止を行うことができます。</li>
-                            <li>規約の改定は、サーバー内、Discord、または公式コミュニティ上での告知をもって効力を生じます。変更後は、告知時に定める時点から適用され、改定後に本サービスを利用したユーザーは、変更後の規約に同意したものとみなされます。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（用語の定義）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>「管理権限者」：サーバーの所有者および運営スタッフ。秩序維持のための最終的な判断が権限を有します。</li>
-                            <li>「ユーザー」：本サービスにアクセスするすべての個人。</li>
-                            <li>「警告」：違反行為に対する公式な注意喚起。記録として保持されます。</li>
-                            <li>「ミュート」：チャット発言やコマンド使用を一定期間制限する措置。</li>
-                            <li>「期限 BAN」：定められた期間（7日、30日、90日等）、接続を禁止する措置。</li>
-                            <li>「永久 BAN」：期間の定めなく、将来にわたって一切の接続を禁止する措置。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 2 章 コミュニティ規範と発言（Discord・LINE・ゲーム内）</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（外部サービスへの適用範囲）</h4>
-                        <p style="margin-bottom: 15px;">本規約は、サーバー内のゲームプレイだけでなく、公式 Discord、LINE オープンチャット、および関連するすべての外部コミュニティに適用されます。各プラットフォームの規約（LINE 利用規約等）と併せて、本規約が優先的に適用されるものとします。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（管理権限者の指示遵守）</h4>
-                        <p style="margin-bottom: 15px;">ユーザーは、ゲーム内外を問わず、管理権限者の指示、裁定、誘導に従わなければなりません。これに反抗し、運営業務を妨害する行為は処分の対象となります。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（禁止される発言・コンテンツ）</h4>
-                        <p>以下の行為を、チャット、看板、本・羽ペン、Discord、LINE オープンチャット等のあらゆる媒体で禁止します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>不適切な表現：挑発、暴言、差別的発言（人種、性別、特定の機種利用者への差別等）、過度な下ネタ（R18表現）、公序良俗に反する内容。また、Discord内で中指スタンプその他不適切だと思われるスタンプを禁止します。</li>
-                            <li>スパム行為：意味のない文字列の連投、コマンドの乱用、特定の単語の繰り返しによるチャット欄の占拠。</li>
-                            <li>有害コンテンツ：ウイルス、マルウェア、詐欺サイトへのリンク、ブラウザクラッシャー（GIF等を含む）の送信。</li>
-                            <li>個人情報の保護：自分または他人の本名、住所、電話番号、SNS アカウント、顔写真等の個人情報を、本人の同意の有無を問わず公開・拡散する行為。</li>
-                            <li>政治・宗教：特定の宗教、政党、団体を過度に象徴するものの建築、または布教・扇動行為。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（個人間トラブルの原則）</h4>
-                        <p style="margin-bottom: 15px;">個人間の紛争、口論、いざこざは、原則として当事者間で解決するものとします。ただし、サーバーの安全確保や規約違反が認められる場合、運営は最小限の介入を行う権利を留保します。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 3 章 信用・需要の不当な毀損と扇動の禁止</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（解決済み事案の取扱い）</h4>
-                        <p style="margin-bottom: 15px;">「解決済み事案」とは、事実確認が行われ、運営による処置、謝罪、是正、または公式な告知が完了した事案を指します。これらの事案を、正当な目的なく蒸し返し、サーバーの社会的評価を低下させる目的で反復・継続的に取り上げる行為（再燃・再拡散）を禁止します。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（組織的扇動の禁止）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>他者を動員したタグ運動、外部サーバーや SNS、掲示板等での呼び込み、同趣旨の反復投稿により、本サーバーの秩序を乱し、炎上や不買（利用停止）を誘導する行為を禁止します。</li>
-                            <li>企画立案者だけでなく、実行者や執拗な参加者も共犯的関与として処分の対象となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（ネガティブキャンペーン）</h4>
-                        <p style="margin-bottom: 15px;">虚偽の事実の摘示、断定的誇張、恣意的なスクリーンショットの切り取り、誤解を誘う編集動画の公開、レビュー荒らし等により、本サービスの信用や需要を不当に害する行為を禁止します。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 4 章 ゲーム内行為および Earth 固有ルール</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（大規模地形改変の制限）</h4>
-                        <p>環境保護と景観維持のため、以下の基準を設けます。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>禁止例：広範囲の露天掘り、幅 20m（20ブロック）以上の水域（湖・川・海）の埋立。</li>
-                            <li>許容例：戦艦・客船の建造、通路の架橋、石油コンビナート等の海上インフラ、元の海岸線から 40m 以内の護岸工事。</li>
-                            <li>処分：違法建築の撤去および原状回復を命じます。従わない場合は運営により強制削除および BAN を行います。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（サーバー負荷行為）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>故意にチャンク読み込みを急増させる行為、無意味な大量パケット送信、過剰なクロック回路・ホッパー・レッドストーン装置の設置を禁止します。</li>
-                            <li>意図せず高負荷が発生している場合、運営の改善要請に従い、装置の停止または撤去を行わなければなりません。</li>
-                            <li>特定のチャンクを読み込ませる（チャンクローダー的なもの）を使用を禁止します。</li>
-                            <li>大量の TNT を連続して投下する装置、飛行しながら TNT 等を散布する装置（爆撃機）、その他運営がこれに類すると判断する兵器の使用・建造を禁止します。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（バグ・不正利用の禁止）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>バグ・グリッチ：ゲームの不具合や仕様外の挙動（アイテム複製/デュープ、TNT 複製、0-tick 等）を利用して利益を得る行為を禁止します。発見時は速やかに運営へ報告する義務があります。</li>
-                            <li>チート・改造：不正改造クライアント（Horion 等）、透過テクスチャ（X-ray）、HP 表示、マップ表示、ヒットボックス表示、Freecam 等の、バニラ環境で得られない情報を取得する手段を一切禁止します。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（自動化・マクロ・放置）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>全鯖共通禁止：外部ツール、マクロ、オートクリック、AI BOT、入力を固定する重り等による自動化を禁止します。</li>
-                            <li>資源 1/2 鯖の特例：放置（AFK）自体は許可されます。ただし、AFK キック（自動切断）を回避するための機構（自動移動、定期入力等）全般を禁止します。</li>
-                            <li>許可される装置：サトウキビ自動収穫機、玄武岩生成、自動釣り機（竿の操作は手動）、クラフターを用いた自動クラフト、丸石製造機、自動仕分け機。</li>
-                            <li>資源鯖のシード値などからサイトを利用し、村やその他の特定の物を見つける行為を禁ずる。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 5 条（荒らし・窃盗・土地利用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Earth 領土内：他国の建築物破壊、チェストからの窃盗、家畜（エンティティ）のキル、スポーン地点の封鎖を厳禁とします。</li>
-                            <li>隣接地の保護：他国領土の境界から 3 チャンク以内において、嫌がらせと判断される建築や地形破壊を行ってはなりません。また、荒野においても荒らしや破壊、マグマの設置などを行ったと見なされますと、規則違反となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 6 条（PK行為のルール）</h4>
-                        <p>PK（Player Kill）とは、他のプレイヤーに攻撃を行い、死亡やアイテムロスト等の影響を与える行為を指します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>プレイヤー間で同意がある場合、PK自体は許可されますが、以下の行為は禁止です：
-                                <ul style="margin-left: 20px;">
-                                    <li>キルログを利用した過度な荒らし（ログが連続して大量に流れる等）</li>
-                                    <li>同意を得ていないのにも関わらず同意を得たと偽る行為</li>
-                                </ul>
-                            </li>
-                            <li>過度なPK（キルログが過剰に流れるような行為）は、同意の有無にかかわらず処分の対象となります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 7 条（土地に関するルール）</h4>
-                        <p>飛び地は認めますが以下の行為を禁止します。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>他国または他プレイヤーの領土を囲む形で領土を取得する行為。また、不適切な領土の取り方（アウトポスト・他国の領土進行を不可能にする）</li>
-                            <li>自国領土の周囲を囲み、その内部を新たに自国領として主張する行為。</li>
-                            <li>違反時の処分は原則として以下の段階で適用されます：<br>警告 → 一定期間BAN → 永久BAN</li>
-                            <li>PK違反の報告時に、スクリーンショットや動画の提出は任意です。ただし、提出した場合は相手が処分される可能性が高くなります。</li>
-                            <li>ネザーやエリトラ、移動手段を問わず様々な方法で遠い場所へ行き、想定されていないフラットワールドのような場所へ行き建築や領土設定、トラップなどを建設することを一切禁じます。</li>
-                            <li>海岸から10チャンク以上離れた海域において、領土の取得、建築物の建設、トラップの設置、拠点化その他これらに類する行為を禁止します。発見次第、運営から撤去命令が下されます。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 5 章 アカウント管理とプライバシー</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（なりすましの禁止）</h4>
-                        <p style="margin-bottom: 15px;">他ユーザー、実在の有名人、または運営スタッフを詐称する行為を禁止します。また、アカウントの譲渡、売買、共有も一切認められません。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データ保持）</h4>
-                        <p style="margin-bottom: 15px;">運営は、処罰記録、チャットログ、行動ログを、サービスの安全運営に必要な期間保持します。ユーザーは、本人確認が可能な範囲で、自己のデータの開示・訂正を求めることができます。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（複数のアカウントの利用）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Discordの複数アカウントの所有を認めますが、なりすまし・処罰回避・別人を装う行為を禁じます。</li>
-                            <li>Minecraftにおいては、運営に了承なくサブアカウントを利用する事を禁じます。</li>
-                            <li>外出先や、データ損失、アカウントを使用出来なくなった、等の運営に認められる特別な事情のある場合は事前に速やかに連絡等すること。</li>
-                            <li>サブアカウントを使う公平性を損なう行為（投票・チャンク読み込み・処罰回避等)を一律禁止にします。</li>
-                            <li>また、Discord・LINE・Minecraftでの違反が見つかった場合、全てのアカウントを処罰します。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 6 章 包括的禁止事項と即時永久 BAN</h3>
-                        <p>以下の項目に該当する行為は、事前の警告なく即時永久 BAN となる重大違反とみなします。</p>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>チートツールの使用：PvP 改造、透過系ツール、ハッククライアント。</li>
-                            <li>ネットワーク攻撃：DoS/DDoS 攻撃、サーバー脆弱性の悪用。</li>
-                            <li>認証回避：BAN 回避を目的とした別アカウント、VPN、プロキシの使用。</li>
-                            <li>アカウント窃用：他者のアカウントへの不正アクセス。</li>
-                            <li>法令違反：日本国内法に抵触するあらゆる行為。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 7 章 処罰基準と異議申立</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（処罰の原則）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>処罰は原則として「警告 → ミュート → タイム BAN → 永久 BAN」の順に段階的に適用されます。ただし、行為の悪質性、重大性、反復性、およびサーバーに与える影響度を鑑み、管理権限者の裁量により段階を飛ばして適用することができます。</li>
-                            <li>処分内容（期間や範囲）の最終決定権は運営にあります。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（異議申立の手続き）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>ユーザーは、不当な処分であると考える場合、処分告知日から 7 日以内に公式 Discord の「チケット」を通じて異議を申し立てることができます。</li>
-                            <li>申立時には、プレイヤー名、XUID、処分の詳細、および主張を裏付ける証拠（未加工のスクリーンショットや動画）を提出する必要があります。</li>
-                            <li>期限を過ぎた申立、または同一事案での重複したチケット作成は受理されません。</li>
-                        </ol>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 8 章 サービス提供・免責事項</h3>
-                        
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（停止・中断）</h4>
-                        <p style="margin-bottom: 15px;">運営は、定期的にワールドのバックアップを行いますが、システム保守、アップデート、サーバー攻撃への対応、または天災等の不可抗力により、予告なくサービスの一部または全部を停止・中断することがあります。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データの消失）</h4>
-                        <p style="margin-bottom: 15px;">不具合、攻撃、メンテナンス、負荷等により、データが消失、または特定時点まで巻き戻る（ロールバック）ことがあります。これに伴うユーザーの損失（アイテム、建築物、時間等）について、運営は特定の場合によるもの以外はの補償を行いません。</p>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（知的財産権）</h4>
-                        <ol style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>サーバー内のテキスト、設定、プログラム、公式画像等の権利は運営に帰属します。</li>
-                            <li>ユーザーが作成した建築物等の権利はユーザーに帰属しますが、運営はサーバーの広報・紹介目的の範囲内で、これらを無償かつ自由に利用（撮影、動画公開等）できるものとします。</li>
-                        </ol>
-
-                        <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（無保証・責任制限）</h4>
-                        <p style="margin-bottom: 15px;">本サービスは「現状有姿」で提供され、その完全性、正確性、安全性についていかなる保証も行いません。ユーザー間での物品売買や契約は自己責任とし、運営は一切関与しません。</p>
-
-                        <h3 style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;">第 9 章 準拠法・裁判管轄</h3>
-                        <p style="margin-bottom: 15px;">本規約の解釈は日本法を準拠法とし、規約の解釈および裁定に関する最終的な決定権は運営に帰属します。</p>
-
-                    </div>
-
-                    <div style="margin-top: 40px; text-align: center;">
-                        <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                    </div>
-
-                </div>
-            </section>
-        </div>
-
-        <!-- プライバシーポリシーページ -->
-        <div id="page-privacy" style="display: none;">
-            <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <h2 style="text-align: center; margin-bottom: 30px;">プライバシーポリシー</h2>
-                    <div style="color: #ccc; line-height: 1.8; font-size: 15px;">
-                        <p style="margin-bottom: 20px;">MenEarth（以下「当サーバー」）は、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシーを定めます。</p>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第1条（収集する情報）</h3>
-                        <p>当サービスでは、GoogleログインおよびDiscord認証等を通じて、以下の情報を取得する場合があります。</p>
-                        <ul style="margin-left: 20px; margin-top: 8px;">
-                            <li>ユーザー識別子（UID）</li>
-                            <li>表示名およびプロフィール画像情報</li>
-                            <li>メールアドレス（管理者識別用）</li>
-                        </ul>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第2条（情報の利用目的）</h3>
-                        <p>取得した情報は、以下の目的のためにのみ利用します。</p>
-                        <ul style="margin-left: 20px; margin-top: 8px;">
-                            <li>Wikiおよびイベントコンテンツの投稿者識別・編集権限の管理</li>
-                            <li>BOT対策およびスパム防止</li>
-                            <li>サービス運営上の連絡および不正利用防止</li>
-                        </ul>
-
-                        <h3 style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;">第3条（第三者提供の制限）</h3>
-                        <p>法令に基づく場合を除き、ユーザーの同意を得ることなく第三者に個人情報を提供することはありません。</p>
-
-                        <div style="margin-top: 40px; text-align: center;">
-                            <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-<footer>
-    <div class="footer-container">
-        <!-- 左側エリア -->
-        <div class="footer-left">
-            <!-- 上：利用規約とプライバシーポリシー -->
-            <div>
-                <div class="footer-title">規約・ポリシー</div>
-<!-- フッターの「利用規約」「プライバシーポリシー」部分 -->
-<div class="footer-links-inline">
-    <a href="javascript:void(0)" onclick="toggleMainPage('terms')">利用規約</a>
-    <a href="javascript:void(0)" onclick="toggleMainPage('privacy')">プライバシーポリシー</a>
-</div>
+      <div id="page-home">
+        <section id="top">
+          <div id="top-text-content">
+            <h1>MenEarth S4.</h1>
+            <h4 style="color: #ccc;">Created by: Kuwagata. 非公式公認ホームページ</h4>
+            <h3 style="font-size: 4vmin; margin-top: 20px; color: #fff;">マイクラ(統合版)での国家建設、世界征服</h3>
+            <div class="server-status-container">
+              <span id="status-indicator" class="status-dot"></span>
+              <span id="server-player-count">サーバー人数: 取得中...</span>
             </div>
-            
-            <!-- 下：ページ一覧 -->
-            <div>
-                <div class="footer-title">ページ一覧</div>
-                <ul class="footer-links-list">
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('home')">ホーム</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('wiki')">共有Wiki</a></li>
-                    <li><a href="javascript:void(0)" onclick="toggleMainPage('event')">イベント情報</a></li>
-                </ul>
+            <div style="margin-top: 30px;">
+              <a href="https://discord.gg/gwvEE6G9nw" class="btn">Join Discord</a>
+              <button
+                class="btn"
+                onclick="toggleMainPage('wiki')"
+                style="background: transparent; color: #fff; border: 1px solid #fff;"
+              >
+                共有Wikiを開く
+              </button>
+              <button
+                class="btn"
+                onclick="toggleMainPage('event')"
+                style="background: #4caf50; color: #fff; border: none;"
+              >
+                イベント情報
+              </button>
             </div>
-        </div>
- 
-        <!-- 右側エリア：サーバー紹介文 -->
-        <div class="footer-right">
-            <div class="footer-title">MenEarth S4 について</div>
-            <p class="footer-desc">
-                MenEarth（麺アース）は、Minecraft統合版で国家建設や世界征服を楽しめるマルチサーバーです。プレイヤー同士の交流が活発で、定期的なイベント開催や迅速な運営サポートを行っています。
+          </div>
+        </section>
+        <section class="section-flex" style="background-color: var(--grey);">
+          <div class="left-text">
+            <h1>Hi! |ω・｀)ﾉ ﾔｧ</h1>
+            <p>
+              麺アースでは民度が高く、プレイヤー同士の交流が
+              <br />
+              活発です。更新も現在続いており、イベントなども開催されているので、ぜひサーバーを訪れてみてください！
             </p>
+          </div>
+          <div style="background: #222; height: 300px; border-radius: 20px; width: 50%;">
+            <img
+              src="https://i.imgur.com/qNJNk24.png"
+              alt="サーバーの様子"
+              style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;"
+            />
+          </div>
+        </section>
+        <section id="details">
+          <div style="text-align: center;">
+            <h2>機能を詳しく見る</h2>
+            <p style="color: #888; margin-top: 10px;">左のメニューを選択して、詳細を切り替えます。</p>
+          </div>
+          <div class="feature-container">
+            <div class="feature-nav" id="nav-buttons"></div>
+            <div class="feature-display" id="display-panel">
+              <div id="display-content" class="fade-in">
+                <h1 id="display-title" style="font-size: 36px; margin-bottom: 15px;">機能を選択</h1>
+                <p id="display-desc" style="font-size: 18px; color: #888; line-height: 1.6;">
+                  ここに説明が表示されます。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section-flex" style="background-color: var(--grey);">
+          <div class="left-text">
+            <h1>MenEarth宣伝動画(作成中)</h1>
+            <p>
+              右の動画をご覧ください→
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+            </p>
+          </div>
+          <div style="background: hsl(0, 0%, 13%); height: 300px; border-radius: 20px; width: 50%;">
+            <video
+              src=""
+              alt="サーバーの様子"
+              style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; opacity: 0.85;"
+              controls
+            ></video>
+          </div>
+        </section>
+        <section id="more">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h2>麺アースの概要</h2>
+            <div style="margin-top: 20px;">
+              <button class="btn" onclick="renderView('grid')" id="btn-grid">グリッド</button>
+              <button
+                class="btn"
+                onclick="renderView('list')"
+                id="btn-list"
+                style="background: transparent; color: var(--black); border: 1px solid var(--black);"
+              >
+                リスト
+              </button>
+            </div>
+          </div>
+          <div id="view-target" class="fade-in"></div>
+        </section>
+      </div>
+      <div id="page-wiki" style="display: none;">
+        <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h2>MenEarth 共有Wiki</h2>
+            <div id="auth-status-container" class="auth-buttons">
+              <button
+                id="btn-google-login"
+                class="btn"
+                style="background:#ea4335; color:#fff; padding: 8px 20px; font-size:14px; margin: 0 5px;"
+              >
+                Googleでログイン
+              </button>
+              <span id="user-info" style="color:#aaa; font-size:14px; display:none;"></span>
+              <button
+                id="btn-discord-logout"
+                class="btn"
+                style="background:#f44; color:#fff; padding: 4px 12px; font-size:12px; display:none; margin: 0 5px;"
+              >
+                ログアウト
+              </button>
+            </div>
+          </div>
+          <div class="feature-container">
+            <div class="feature-nav">
+              <input
+                type="text"
+                id="wiki-search"
+                placeholder="ページを検索..."
+                class="wiki-input"
+                style="margin-bottom: 10px;"
+              />
+              <div id="wiki-page-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+              <hr style="border-color: #333; margin: 10px 0;" />
+              <button
+                id="btn-create-page"
+                class="btn"
+                onclick="prepareNewPage()"
+                style="margin: 0; width: 100%; display:none;"
+              >
+                ＋ 新しいページを作る
+              </button>
+              <p id="login-alert-text" style="color:#888; font-size:12px; text-align:center;">
+                ※ ページの作成・編集にはログインが必要です
+              </p>
+            </div>
+            <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
+              <div id="wiki-view-mode" style="width: 100%; text-align: left;">
+                <h1 id="wiki-title" style="font-size: 32px; margin-bottom: 15px;">Wikiへようこそ</h1>
+                <div id="wiki-author" style="font-size:12px; color:#666; margin-bottom:10px;"></div>
+                <div id="wiki-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">
+                  左側からページを選択してください。
+                </div>
+                <div style="margin-top: 30px;">
+                  <button id="btn-wiki-edit" class="btn" style="display: none; margin: 0;" onclick="enableEditMode()">
+                    このページを編集する
+                  </button>
+                  <p id="edit-lock-msg" style="color:#f44; font-size:13px; display:none; margin-top:10px;">
+                    ⚠️ このページは作成者本人しか編集できません。
+                  </p>
+                </div>
+              </div>
+              <div id="wiki-edit-mode" style="display: none; width: 100%;">
+                <input
+                  type="text"
+                  id="edit-wiki-title"
+                  placeholder="ページタイトル"
+                  class="wiki-input"
+                  style="font-size: 20px; font-weight: 500;"
+                />
+                <textarea
+                  id="edit-wiki-content"
+                  placeholder="本文を入力してください..."
+                  class="wiki-textarea"
+                ></textarea>
+                <div class="wiki-help-box">
+                  <strong>💡 書き方ルール:</strong>
+                  <br />
+                  🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]
+                  <br />
+                  🔹 リスト: 行頭に
+                  <code style="color:#fff">*</code>
+                  | 折りたたみ:
+                  <code style="color:#fff">[title:題名]本文[end]</code>
+                  | 枠線:
+                  <code style="color:#fff">```文字```</code>
+                </div>
+                <div style="margin-top: 20px; text-align: left;">
+                  <button class="btn" onclick="saveWikiPage()" style="margin-left: 0;">保存する</button>
+                  <button
+                    class="btn"
+                    style="background: transparent; color: var(--black); border: 1px solid var(--black);"
+                    onclick="cancelEdit()"
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="page-event" style="display: none;">
+        <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h2>MenEarth イベント情報</h2>
+            <p style="color: #888; margin-top: 10px;">サーバー内で開催される最新のイベント情報です！</p>
+          </div>
+          <div class="feature-container">
+            <div class="feature-nav">
+              <div id="event-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+              <hr id="event-admin-hr" style="border-color: #333; margin: 10px 0; display: none;" />
+              <button
+                id="btn-create-event"
+                class="btn"
+                onclick="prepareNewEvent()"
+                style="margin: 0; width: 100%; display: none; background: #4caf50; color: #fff;"
+              >
+                ＋ 新しいイベントを投稿
+              </button>
+            </div>
+            <div class="feature-display" style="padding: 40px; justify-content: flex-start;">
+              <div id="event-view-mode" style="width: 100%; text-align: left;">
+                <h1 id="event-title" style="font-size: 32px; margin-bottom: 15px;">イベントを選択</h1>
+                <div id="event-date" style="font-size:14px; color:#aaa; margin-bottom:15px;"></div>
+                <div id="event-content" class="wiki-display-content" style="font-size: 16px; color: #ccc;">
+                  左側からイベントを選択してください。
+                </div>
+                <div style="margin-top: 30px;">
+                  <button
+                    id="btn-event-edit"
+                    class="btn"
+                    style="display: none; margin: 0;"
+                    onclick="enableEventEditMode()"
+                  >
+                    このイベントを編集する
+                  </button>
+                </div>
+              </div>
+              <div id="event-edit-mode" style="display: none; width: 100%;">
+                <input
+                  type="text"
+                  id="edit-event-title"
+                  placeholder="イベントタイトル"
+                  class="wiki-input"
+                  style="font-size: 20px; font-weight: 500;"
+                />
+                <input
+                  type="text"
+                  id="edit-event-date"
+                  placeholder="開催日時 (例: 2026年8月1日 21:00〜)"
+                  class="wiki-input"
+                  style="font-size: 16px;"
+                />
+                <textarea
+                  id="edit-event-content"
+                  placeholder="イベントの詳細やルール、参加条件などを入力してください（Wikiと同じルールで太字や画像[img:URL]が使えます）"
+                  class="wiki-textarea"
+                ></textarea>
+                <div class="wiki-help-box">
+                  <strong>💡 書き方ルール:</strong>
+                  <br />
+                  🔹 **太字** | *斜体* | ~~打ち消し~~ | [img:画像URL]
+                  <br />
+                  🔹 リスト: 行頭に
+                  <code style="color:#fff">*</code>
+                  | 折りたたみ:
+                  <code style="color:#fff">[title:題名]本文[end]</code>
+                </div>
+                <div style="margin-top: 20px; text-align: left;">
+                  <button class="btn" onclick="saveEventPage()" style="margin-left: 0; background: #fff; color: #000;">
+                    イベントを保存
+                  </button>
+                  <button
+                    class="btn"
+                    style="background: transparent; color: var(--black); border: 1px solid var(--black);"
+                    onclick="cancelEventEdit()"
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="page-terms" style="display: none;">
+        <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+          <div style="max-width: 900px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: 20px;">麺 Earth 統一利用規約（包括的統合版）</h2>
+            <div style="text-align: center; margin-bottom: 30px;">
+              <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
+            </div>
+            <div
+              style="color: #ccc; line-height: 1.8; font-size: 14px; background: #1a1a1a; padding: 30px; border-radius: 8px; border: 1px solid #333;"
+            >
+              <h3
+                style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 1 章 総則
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（目的および本規約の適用）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  本規約は、Minecraft サーバー「麺
+                  Earth」（以下「本サーバー」）および本サーバー内で提供する一切のサービス（以下「本サービス」）の利用条件を定めるものです。
+                </li>
+                <li>
+                  本規約は、本サーバーの秩序維持、安全確保、および全ユーザー間の公平性を確保することを目的とします。
+                </li>
+                <li>
+                  ユーザーは、本サーバー（Minecraft）に接続し、または公式 Discord、LINE
+                  オープンチャット、ウェブサイト等の関連コミュニティに参加した時点で、本規約の全条項に同意したものとみなします。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（規約の構成・改定）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  本規約は章立てで構成され、運営が必要と判断した場合、ユーザーの個別の同意を得ることなく、いつでも内容の変更、追加、廃止を行うことができます。
+                </li>
+                <li>
+                  規約の改定は、サーバー内、Discord、または公式コミュニティ上での告知をもって効力を生じます。変更後は、告知時に定める時点から適用され、改定後に本サービスを利用したユーザーは、変更後の規約に同意したものとみなされます。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（用語の定義）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  「管理権限者」：サーバーの所有者および運営スタッフ。秩序維持のための最終的な判断が権限を有します。
+                </li>
+                <li>「ユーザー」：本サービスにアクセスするすべての個人。</li>
+                <li>「警告」：違反行為に対する公式な注意喚起。記録として保持されます。</li>
+                <li>「ミュート」：チャット発言やコマンド使用を一定期間制限する措置。</li>
+                <li>「期限 BAN」：定められた期間（7日、30日、90日等）、接続を禁止する措置。</li>
+                <li>「永久 BAN」：期間の定めなく、将来にわたって一切の接続を禁止する措置。</li>
+              </ol>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 2 章 コミュニティ規範と発言（Discord・LINE・ゲーム内）
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（外部サービスへの適用範囲）</h4>
+              <p style="margin-bottom: 15px;">
+                本規約は、サーバー内のゲームプレイだけでなく、公式 Discord、LINE
+                オープンチャット、および関連するすべての外部コミュニティに適用されます。各プラットフォームの規約（LINE
+                利用規約等）と併せて、本規約が優先的に適用されるものとします。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（管理権限者の指示遵守）</h4>
+              <p style="margin-bottom: 15px;">
+                ユーザーは、ゲーム内外を問わず、管理権限者の指示、裁定、誘導に従わなければなりません。これに反抗し、運営業務を妨害する行為は処分の対象となります。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（禁止される発言・コンテンツ）</h4>
+              <p>
+                以下の行為を、チャット、看板、本・羽ペン、Discord、LINE オープンチャット等のあらゆる媒体で禁止します。
+              </p>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  不適切な表現：挑発、暴言、差別的発言（人種、性別、特定の機種利用者への差別等）、過度な下ネタ（R18表現）、公序良俗に反する内容。また、Discord内で中指スタンプその他不適切だと思われるスタンプを禁止します。
+                </li>
+                <li>
+                  スパム行為：意味のない文字列の連投、コマンドの乱用、特定の単語の繰り返しによるチャット欄の占拠。
+                </li>
+                <li>
+                  有害コンテンツ：ウイルス、マルウェア、詐欺サイトへのリンク、ブラウザクラッシャー（GIF等を含む）の送信。
+                </li>
+                <li>
+                  個人情報の保護：自分または他人の本名、住所、電話番号、SNS
+                  アカウント、顔写真等の個人情報を、本人の同意の有無を問わず公開・拡散する行為。
+                </li>
+                <li>政治・宗教：特定の宗教、政党、団体を過度に象徴するものの建築、または布教・扇動行為。</li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（個人間トラブルの原則）</h4>
+              <p style="margin-bottom: 15px;">
+                個人間の紛争、口論、いざこざは、原則として当事者間で解決するものとします。ただし、サーバーの安全確保や規約違反が認められる場合、運営は最小限の介入を行う権利を留保します。
+              </p>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 3 章 信用・需要の不当な毀損と扇動の禁止
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（解決済み事案の取扱い）</h4>
+              <p style="margin-bottom: 15px;">
+                「解決済み事案」とは、事実確認が行われ、運営による処置、謝罪、是正、または公式な告知が完了した事案を指します。これらの事案を、正当な目的なく蒸し返し、サーバーの社会的評価を低下させる目的で反復・継続的に取り上げる行為（再燃・再拡散）を禁止します。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（組織的扇動の禁止）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  他者を動員したタグ運動、外部サーバーや
+                  SNS、掲示板等での呼び込み、同趣旨の反復投稿により、本サーバーの秩序を乱し、炎上や不買（利用停止）を誘導する行為を禁止します。
+                </li>
+                <li>企画立案者だけでなく、実行者や執拗な参加者も共犯的関与として処分の対象となります。</li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（ネガティブキャンペーン）</h4>
+              <p style="margin-bottom: 15px;">
+                虚偽の事実の摘示、断定的誇張、恣意的なスクリーンショットの切り取り、誤解を誘う編集動画の公開、レビュー荒らし等により、本サービスの信用や需要を不当に害する行為を禁止します。
+              </p>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 4 章 ゲーム内行為および Earth 固有ルール
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（大規模地形改変の制限）</h4>
+              <p>環境保護と景観維持のため、以下の基準を設けます。</p>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>禁止例：広範囲の露天掘り、幅 20m（20ブロック）以上の水域（湖・川・海）の埋立。</li>
+                <li>
+                  許容例：戦艦・客船の建造、通路の架橋、石油コンビナート等の海上インフラ、元の海岸線から 40m
+                  以内の護岸工事。
+                </li>
+                <li>
+                  処分：違法建築の撤去および原状回復を命じます。従わない場合は運営により強制削除および BAN を行います。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（サーバー負荷行為）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  故意にチャンク読み込みを急増させる行為、無意味な大量パケット送信、過剰なクロック回路・ホッパー・レッドストーン装置の設置を禁止します。
+                </li>
+                <li>
+                  意図せず高負荷が発生している場合、運営の改善要請に従い、装置の停止または撤去を行わなければなりません。
+                </li>
+                <li>特定のチャンクを読み込ませる（チャンクローダー的なもの）を使用を禁止します。</li>
+                <li>
+                  大量の TNT を連続して投下する装置、飛行しながら TNT
+                  等を散布する装置（爆撃機）、その他運営がこれに類すると判断する兵器の使用・建造を禁止します。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（バグ・不正利用の禁止）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  バグ・グリッチ：ゲームの不具合や仕様外の挙動（アイテム複製/デュープ、TNT 複製、0-tick
+                  等）を利用して利益を得る行為を禁止します。発見時は速やかに運営へ報告する義務があります。
+                </li>
+                <li>
+                  チート・改造：不正改造クライアント（Horion 等）、透過テクスチャ（X-ray）、HP
+                  表示、マップ表示、ヒットボックス表示、Freecam
+                  等の、バニラ環境で得られない情報を取得する手段を一切禁止します。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（自動化・マクロ・放置）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  全鯖共通禁止：外部ツール、マクロ、オートクリック、AI
+                  BOT、入力を固定する重り等による自動化を禁止します。
+                </li>
+                <li>
+                  資源 1/2 鯖の特例：放置（AFK）自体は許可されます。ただし、AFK
+                  キック（自動切断）を回避するための機構（自動移動、定期入力等）全般を禁止します。
+                </li>
+                <li>
+                  許可される装置：サトウキビ自動収穫機、玄武岩生成、自動釣り機（竿の操作は手動）、クラフターを用いた自動クラフト、丸石製造機、自動仕分け機。
+                </li>
+                <li>資源鯖のシード値などからサイトを利用し、村やその他の特定の物を見つける行為を禁ずる。</li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 5 条（荒らし・窃盗・土地利用）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  Earth
+                  領土内：他国の建築物破壊、チェストからの窃盗、家畜（エンティティ）のキル、スポーン地点の封鎖を厳禁とします。
+                </li>
+                <li>
+                  隣接地の保護：他国領土の境界から 3
+                  チャンク以内において、嫌がらせと判断される建築や地形破壊を行ってはなりません。また、荒野においても荒らしや破壊、マグマの設置などを行ったと見なされますと、規則違反となります。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 6 条（PK行為のルール）</h4>
+              <p>
+                PK（Player Kill）とは、他のプレイヤーに攻撃を行い、死亡やアイテムロスト等の影響を与える行為を指します。
+              </p>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  プレイヤー間で同意がある場合、PK自体は許可されますが、以下の行為は禁止です：
+                  <ul style="margin-left: 20px;">
+                    <li>キルログを利用した過度な荒らし（ログが連続して大量に流れる等）</li>
+                    <li>同意を得ていないのにも関わらず同意を得たと偽る行為</li>
+                  </ul>
+                </li>
+                <li>過度なPK（キルログが過剰に流れるような行為）は、同意の有無にかかわらず処分の対象となります。</li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 7 条（土地に関するルール）</h4>
+              <p>飛び地は認めますが以下の行為を禁止します。</p>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  他国または他プレイヤーの領土を囲む形で領土を取得する行為。また、不適切な領土の取り方（アウトポスト・他国の領土進行を不可能にする）
+                </li>
+                <li>自国領土の周囲を囲み、その内部を新たに自国領として主張する行為。</li>
+                <li>
+                  違反時の処分は原則として以下の段階で適用されます：
+                  <br />
+                  警告 → 一定期間BAN → 永久BAN
+                </li>
+                <li>
+                  PK違反の報告時に、スクリーンショットや動画の提出は任意です。ただし、提出した場合は相手が処分される可能性が高くなります。
+                </li>
+                <li>
+                  ネザーやエリトラ、移動手段を問わず様々な方法で遠い場所へ行き、想定されていないフラットワールドのような場所へ行き建築や領土設定、トラップなどを建設することを一切禁じます。
+                </li>
+                <li>
+                  海岸から10チャンク以上離れた海域において、領土の取得、建築物の建設、トラップの設置、拠点化その他これらに類する行為を禁止します。発見次第、運営から撤去命令が下されます。
+                </li>
+              </ol>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 5 章 アカウント管理とプライバシー
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（なりすましの禁止）</h4>
+              <p style="margin-bottom: 15px;">
+                他ユーザー、実在の有名人、または運営スタッフを詐称する行為を禁止します。また、アカウントの譲渡、売買、共有も一切認められません。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データ保持）</h4>
+              <p style="margin-bottom: 15px;">
+                運営は、処罰記録、チャットログ、行動ログを、サービスの安全運営に必要な期間保持します。ユーザーは、本人確認が可能な範囲で、自己のデータの開示・訂正を求めることができます。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（複数のアカウントの利用）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>Discordの複数アカウントの所有を認めますが、なりすまし・処罰回避・別人を装う行為を禁じます。</li>
+                <li>Minecraftにおいては、運営に了承なくサブアカウントを利用する事を禁じます。</li>
+                <li>
+                  外出先や、データ損失、アカウントを使用出来なくなった、等の運営に認められる特別な事情のある場合は事前に速やかに連絡等すること。
+                </li>
+                <li>サブアカウントを使う公平性を損なう行為（投票・チャンク読み込み・処罰回避等)を一律禁止にします。</li>
+                <li>また、Discord・LINE・Minecraftでの違反が見つかった場合、全てのアカウントを処罰します。</li>
+              </ol>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 6 章 包括的禁止事項と即時永久 BAN
+              </h3>
+              <p>以下の項目に該当する行為は、事前の警告なく即時永久 BAN となる重大違反とみなします。</p>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>チートツールの使用：PvP 改造、透過系ツール、ハッククライアント。</li>
+                <li>ネットワーク攻撃：DoS/DDoS 攻撃、サーバー脆弱性の悪用。</li>
+                <li>認証回避：BAN 回避を目的とした別アカウント、VPN、プロキシの使用。</li>
+                <li>アカウント窃用：他者のアカウントへの不正アクセス。</li>
+                <li>法令違反：日本国内法に抵触するあらゆる行為。</li>
+              </ol>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 7 章 処罰基準と異議申立
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（処罰の原則）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  処罰は原則として「警告 → ミュート → タイム BAN → 永久
+                  BAN」の順に段階的に適用されます。ただし、行為の悪質性、重大性、反復性、およびサーバーに与える影響度を鑑み、管理権限者の裁量により段階を飛ばして適用することができます。
+                </li>
+                <li>処分内容（期間や範囲）の最終決定権は運営にあります。</li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（異議申立の手続き）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>
+                  ユーザーは、不当な処分であると考える場合、処分告知日から 7 日以内に公式 Discord
+                  の「チケット」を通じて異議を申し立てることができます。
+                </li>
+                <li>
+                  申立時には、プレイヤー名、XUID、処分の詳細、および主張を裏付ける証拠（未加工のスクリーンショットや動画）を提出する必要があります。
+                </li>
+                <li>期限を過ぎた申立、または同一事案での重複したチケット作成は受理されません。</li>
+              </ol>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 8 章 サービス提供・免責事項
+              </h3>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 1 条（停止・中断）</h4>
+              <p style="margin-bottom: 15px;">
+                運営は、定期的にワールドのバックアップを行いますが、システム保守、アップデート、サーバー攻撃への対応、または天災等の不可抗力により、予告なくサービスの一部または全部を停止・中断することがあります。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 2 条（データの消失）</h4>
+              <p style="margin-bottom: 15px;">
+                不具合、攻撃、メンテナンス、負荷等により、データが消失、または特定時点まで巻き戻る（ロールバック）ことがあります。これに伴うユーザーの損失（アイテム、建築物、時間等）について、運営は特定の場合によるもの以外はの補償を行いません。
+              </p>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 3 条（知的財産権）</h4>
+              <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>サーバー内のテキスト、設定、プログラム、公式画像等の権利は運営に帰属します。</li>
+                <li>
+                  ユーザーが作成した建築物等の権利はユーザーに帰属しますが、運営はサーバーの広報・紹介目的の範囲内で、これらを無償かつ自由に利用（撮影、動画公開等）できるものとします。
+                </li>
+              </ol>
+              <h4 style="color: #eee; margin: 15px 0 5px; font-size: 15px;">第 4 条（無保証・責任制限）</h4>
+              <p style="margin-bottom: 15px;">
+                本サービスは「現状有姿」で提供され、その完全性、正確性、安全性についていかなる保証も行いません。ユーザー間での物品売買や契約は自己責任とし、運営は一切関与しません。
+              </p>
+              <h3
+                style="color: #fff; margin: 30px 0 10px; font-size: 18px; border-bottom: 2px solid var(--black, #fff); padding-bottom: 5px;"
+              >
+                第 9 章 準拠法・裁判管轄
+              </h3>
+              <p style="margin-bottom: 15px;">
+                本規約の解釈は日本法を準拠法とし、規約の解釈および裁定に関する最終的な決定権は運営に帰属します。
+              </p>
+            </div>
+            <div style="margin-top: 40px; text-align: center;">
+              <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="page-privacy" style="display: none;">
+        <section style="padding: 60px 10%; background-color: var(--white); min-height: calc(100vh - 50px);">
+          <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: 30px;">プライバシーポリシー</h2>
+            <div style="color: #ccc; line-height: 1.8; font-size: 15px;">
+              <p style="margin-bottom: 20px;">
+                MenEarth（以下「当サーバー」）は、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシーを定めます。
+              </p>
+              <h3
+                style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;"
+              >
+                第1条（収集する情報）
+              </h3>
+              <p>当サービスでは、GoogleログインおよびDiscord認証等を通じて、以下の情報を取得する場合があります。</p>
+              <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>ユーザー識別子（UID）</li>
+                <li>表示名およびプロフィール画像情報</li>
+                <li>メールアドレス（管理者識別用）</li>
+              </ul>
+              <h3
+                style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;"
+              >
+                第2条（情報の利用目的）
+              </h3>
+              <p>取得した情報は、以下の目的のためにのみ利用します。</p>
+              <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>Wikiおよびイベントコンテンツの投稿者識別・編集権限の管理</li>
+                <li>BOT対策およびスパム防止</li>
+                <li>サービス運営上の連絡および不正利用防止</li>
+              </ul>
+              <h3
+                style="color: #fff; margin: 25px 0 10px; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;"
+              >
+                第3条（第三者提供の制限）
+              </h3>
+              <p>法令に基づく場合を除き、ユーザーの同意を得ることなく第三者に個人情報を提供することはありません。</p>
+              <div style="margin-top: 40px; text-align: center;">
+                <button class="btn" onclick="toggleMainPage('home')">ホームへ戻る</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-container">
+        <div class="footer-left">
+          <div>
+            <div class="footer-title">規約・ポリシー</div>
+            <div class="footer-links-inline">
+              <a href="javascript:void(0)" onclick="toggleMainPage('terms')">利用規約</a>
+              <a href="javascript:void(0)" onclick="toggleMainPage('privacy')">プライバシーポリシー</a>
+            </div>
+          </div>
+          <div>
+            <div class="footer-title">ページ一覧</div>
+            <ul class="footer-links-list">
+              <li><a href="javascript:void(0)" onclick="toggleMainPage('home')">ホーム</a></li>
+              <li><a href="javascript:void(0)" onclick="toggleMainPage('wiki')">共有Wiki</a></li>
+              <li><a href="javascript:void(0)" onclick="toggleMainPage('event')">イベント情報</a></li>
+            </ul>
+          </div>
         </div>
-    </div>
-
-    <!-- コピーライト -->
-    <div class="footer-copyright">
-        非公式公認的MenEarthのHomePages Copyright © 2026 MenEarth All rights reserved.
-    </div>
-</footer>
-
-    <!-- 🔒 BOT対策CAPTCHA用のスクリプト -->
+        <div class="footer-right">
+          <div class="footer-title">MenEarth S4 について</div>
+          <p class="footer-desc">
+            MenEarth（麺アース）は、Minecraft統合版で国家建設や世界征服を楽しめるマルチサーバーです。プレイヤー同士の交流が活発で、定期的なイベント開催や迅速な運営サポートを行っています。
+          </p>
+        </div>
+      </div>
+      <div class="footer-copyright">非公式公認的MenEarthのHomePages Copyright © 2026 MenEarth All rights reserved.</div>
+    </footer>
     <script>
-        const captchaData = [
-            { src: '無題 (4).jpg', answer: 'everyone' },
-            { src: '無題 (3).jpg', answer: 'Hi' },
-            { src: '無題 (2).jpg', answer: 'きみの' },
-            { src: '無題 (1).jpg', answer: 'しょぼん' },
-            { src: '無題.jpg', answer: 'みかん' }
-        ];
+      const captchaData = [
+          { src: '無題 (4).jpg', answer: 'everyone' },
+          { src: '無題 (3).jpg', answer: 'Hi' },
+          { src: '無題 (2).jpg', answer: 'きみの' },
+          { src: '無題 (1).jpg', answer: 'しょぼん' },
+          { src: '無題.jpg', answer: 'みかん' }
+      ];
 
-        let currentCaptcha = null;
+      let currentCaptcha = null;
 
-        function loadCaptcha() {
-            const randomIndex = Math.floor(Math.random() * captchaData.length);
-            currentCaptcha = captchaData[randomIndex];
-            
-            document.getElementById('captcha-img').src = currentCaptcha.src;
-            document.getElementById('captcha-input').value = '';
-            document.getElementById('captcha-msg').innerText = '';
-        }
+      function loadCaptcha() {
+          const randomIndex = Math.floor(Math.random() * captchaData.length);
+          currentCaptcha = captchaData[randomIndex];
 
-        function verifyCaptcha() {
-            const userInput = document.getElementById('captcha-input').value.trim();
-            const msg = document.getElementById('captcha-msg');
+          document.getElementById('captcha-img').src = currentCaptcha.src;
+          document.getElementById('captcha-input').value = '';
+          document.getElementById('captcha-msg').innerText = '';
+      }
 
-            if (!userInput) {
-                msg.style.color = '#ff4444';
-                msg.innerText = '文字を入力してください。';
-                return;
-            }
+      function verifyCaptcha() {
+          const userInput = document.getElementById('captcha-input').value.trim();
+          const msg = document.getElementById('captcha-msg');
 
-            if (userInput.toLowerCase() === currentCaptcha.answer.toLowerCase()) {
-                msg.style.color = '#4caf50';
-                msg.innerText = '認証成功！移動中...';
-                
-                setTimeout(() => {
-                    document.getElementById('captcha-overlay').style.display = 'none';
-                    document.body.classList.remove('captcha-locked');
-                }, 500);
-            } else {
-                msg.style.color = '#ff4444';
-                msg.innerText = '不正解です。再試行してください。';
-                setTimeout(loadCaptcha, 1000);
-            }
-        }
+          if (!userInput) {
+              msg.style.color = '#ff4444';
+              msg.innerText = '文字を入力してください。';
+              return;
+          }
 
-        // エンターキーでも送信できるように対応
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCaptcha();
-            document.getElementById('captcha-input').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    verifyCaptcha();
-                }
-            });
-        });
+          if (userInput.toLowerCase() === currentCaptcha.answer.toLowerCase()) {
+              msg.style.color = '#4caf50';
+              msg.innerText = '認証成功！移動中...';
+
+              setTimeout(() => {
+                  document.getElementById('captcha-overlay').style.display = 'none';
+                  document.body.classList.remove('captcha-locked');
+              }, 500);
+          } else {
+              msg.style.color = '#ff4444';
+              msg.innerText = '不正解です。再試行してください。';
+              setTimeout(loadCaptcha, 1000);
+          }
+      }
+
+      // エンターキーでも送信できるように対応
+      document.addEventListener('DOMContentLoaded', () => {
+          loadCaptcha();
+          document.getElementById('captcha-input').addEventListener('keypress', function (e) {
+              if (e.key === 'Enter') {
+                  verifyCaptcha();
+              }
+          });
+      });
     </script>
-
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+              import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+              import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+              import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAWJ8gxMBqlCH-HGccXb-PpwM7xWVghUNg",
-            authDomain: "my-ball-wiki.firebaseapp.com",
-            projectId: "my-ball-wiki",
-            storageBucket: "my-ball-wiki.firebasestorage.app",
-            messagingSenderId: "1004863748430",
-            appId: "1:1004863748430:web:584e16403e2eb87c90861f"
-        };
+              const firebaseConfig = {
+                  apiKey: "AIzaSyAWJ8gxMBqlCH-HGccXb-PpwM7xWVghUNg",
+                  authDomain: "my-ball-wiki.firebaseapp.com",
+                  projectId: "my-ball-wiki",
+                  storageBucket: "my-ball-wiki.firebasestorage.app",
+                  messagingSenderId: "1004863748430",
+                  appId: "1:1004863748430:web:584e16403e2eb87c90861f"
+              };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        
-        const googleProvider = new GoogleAuthProvider();
-        let currentPages = [], selectedPageId = null, currentUser = null;
-        
-        // 💡 イベントページ用の変数
-        let currentEvents = [], selectedEventId = null;
-        const ADMIN_EMAIL = "mikancat09@gmail.com"; // 管理者メールアドレス
+              const app = initializeApp(firebaseConfig);
+              const db = getFirestore(app);
+              const auth = getAuth(app);
 
-        // Google ログイン・ログアウト制御
-        document.getElementById('btn-google-login').onclick = () => signInWithPopup(auth, googleProvider).catch(e => console.error(e));
-        document.getElementById('btn-discord-logout').onclick = () => signOut(auth);
+              const googleProvider = new GoogleAuthProvider();
+              let currentPages = [], selectedPageId = null, currentUser = null;
 
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            const googleBtn = document.getElementById('btn-google-login');
-            const logoutBtn = document.getElementById('btn-discord-logout');
-            const userInfo = document.getElementById('user-info');
-            const createBtn = document.getElementById('btn-create-page');
-            const alertTxt = document.getElementById('login-alert-text');
+              // 💡 イベントページ用の変数
+              let currentEvents = [], selectedEventId = null;
+              const ADMIN_EMAIL = "mikancat09@gmail.com"; // 管理者メールアドレス
 
-            if (user) {
-                googleBtn.style.display = 'none';
-                logoutBtn.style.display = 'inline-block';
-                userInfo.style.display = 'inline';
-                userInfo.innerText = `ログイン中: ${user.displayName || 'ユーザー'} さん `;
-                createBtn.style.display = 'block';
-                alertTxt.style.display = 'none';
-            } else {
-                googleBtn.style.display = 'inline-block';
-                logoutBtn.style.display = 'none';
-                userInfo.style.display = 'none';
-                createBtn.style.display = 'none';
-                alertTxt.style.display = 'block';
-            }
-            if(selectedPageId) selectWikiPage(selectedPageId);
-            
-            // 💡 ログイン状態が変わったらイベント側の権限チェックも行う
-            checkEventAdminPermission();
-        });
+              // Google ログイン・ログアウト制御
+              document.getElementById('btn-google-login').onclick = () => signInWithPopup(auth, googleProvider).catch(e => console.error(e));
+              document.getElementById('btn-discord-logout').onclick = () => signOut(auth);
 
-        // 💡 三要素（HOME / WIKI / EVENT）の切り替えに対応できるように関数を拡張
-// 三要素＋規約・ポリシーの切り替えに対応
-window.toggleMainPage = function(targetMode) {
-    const h = document.getElementById('page-home');
-    const w = document.getElementById('page-wiki');
-    const e = document.getElementById('page-event');
-    const t = document.getElementById('page-terms');
-    const p = document.getElementById('page-privacy');
-    const b = document.getElementById('mode-badge');
+              onAuthStateChanged(auth, (user) => {
+                  currentUser = user;
+                  const googleBtn = document.getElementById('btn-google-login');
+                  const logoutBtn = document.getElementById('btn-discord-logout');
+                  const userInfo = document.getElementById('user-info');
+                  const createBtn = document.getElementById('btn-create-page');
+                  const alertTxt = document.getElementById('login-alert-text');
 
-    // いったん全部非表示
-    if (h) h.style.display = 'none';
-    if (w) w.style.display = 'none';
-    if (e) e.style.display = 'none';
-    if (t) t.style.display = 'none';
-    if (p) p.style.display = 'none';
+                  if (user) {
+                      googleBtn.style.display = 'none';
+                      logoutBtn.style.display = 'inline-block';
+                      userInfo.style.display = 'inline';
+                      userInfo.innerText = `ログイン中: ${user.displayName || 'ユーザー'} さん `;
+                      createBtn.style.display = 'block';
+                      alertTxt.style.display = 'none';
+                  } else {
+                      googleBtn.style.display = 'inline-block';
+                      logoutBtn.style.display = 'none';
+                      userInfo.style.display = 'none';
+                      createBtn.style.display = 'none';
+                      alertTxt.style.display = 'block';
+                  }
+                  if(selectedPageId) selectWikiPage(selectedPageId);
 
-    if (!targetMode) {
-        targetMode = 'home';
-    }
+                  // 💡 ログイン状態が変わったらイベント側の権限チェックも行う
+                  checkEventAdminPermission();
+              });
 
-    if (targetMode === 'wiki') {
-        if (w) w.style.display = 'block';
-        b.innerText = "WIKI";
-        loadWikiPages();
-    } else if (targetMode === 'event') {
-        if (e) e.style.display = 'block';
-        b.innerText = "EVENT";
-        loadEventPages();
-    } else if (targetMode === 'terms') {
-        if (t) t.style.display = 'block';
-        b.innerText = "TERMS";
-        window.scrollTo(0, 0);
-    } else if (targetMode === 'privacy') {
-        if (p) p.style.display = 'block';
-        b.innerText = "PRIVACY";
-        window.scrollTo(0, 0);
-    } else {
-        if (h) h.style.display = 'block';
-        b.innerText = "HOME";
-    }
-}
+              // 💡 三要素（HOME / WIKI / EVENT）の切り替えに対応できるように関数を拡張
+      // 三要素＋規約・ポリシーの切り替えに対応
+      window.toggleMainPage = function(targetMode) {
+          const h = document.getElementById('page-home');
+          const w = document.getElementById('page-wiki');
+          const e = document.getElementById('page-event');
+          const t = document.getElementById('page-terms');
+          const p = document.getElementById('page-privacy');
+          const b = document.getElementById('mode-badge');
 
-        function parseWikiText(text) {
-            if (!text) return "";
-            let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            html = html.replace(/```([\s\S]*?)```/g, '<div class="wiki-code-block">$1</div>');
-            html = html.replace(/\[title:(.+?)\]([\s\S]*?)\[end\]/g, (m, t, b) => `<div class="wiki-separator" onclick="this.classList.toggle('open'); event.stopPropagation();"><div class="wiki-separator-title">${t}</div><div class="wiki-separator-body">${b}</div></div>`);
-            html = html.replace(/\[img:(.+?)\]/g, '<img src="$1" alt="画像" loading="lazy">');
-            html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>').replace(/\*([\s\S]+?)\*/g, '<em>$1</em>').replace(/~~([\s\S]+?)~~/g, '<del>$1</del>');
-            
-            let lines = html.split('\n'), inList = false;
-            for (let i = 0; i < lines.length; i++) {
-                if (lines[i].trim().indexOf('* ') === 0) {
-                    let c = lines[i].replace(/^\s*\* /, '');
-                    lines[i] = !inList ? '<ul><li>' + c + '</li>' : '<li>' + c + '</li>';
-                    inList = true;
-                } else {
-                    if (inList) { lines[i - 1] += '</ul>'; inList = false; }
-                    if (!lines[i].includes('</div>') && !lines[i].includes('</li>')) lines[i] += '<br>';
-                }
-            }
-            if (inList) lines[lines.length - 1] += '</ul>';
-            return lines.join('\n');
-        }
+          // いったん全部非表示
+          if (h) h.style.display = 'none';
+          if (w) w.style.display = 'none';
+          if (e) e.style.display = 'none';
+          if (t) t.style.display = 'none';
+          if (p) p.style.display = 'none';
 
-        /* ==================== 既存のWIKI用処理 ==================== */
-        async function loadWikiPages() {
-            const target = document.getElementById('wiki-page-list');
-            target.innerHTML = "<p style='color:#888; font-size:14px;'>同期中...</p>";
-            try {
-                const q = query(collection(db, "menearth_wiki"), orderBy("title", "asc"));
-                const snap = await getDocs(q);
-                currentPages = [];
-                snap.forEach(d => currentPages.push({ id: d.id, ...d.data() }));
-                renderPageList(currentPages);
-            } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
-        }
+          if (!targetMode) {
+              targetMode = 'home';
+          }
 
-        function renderPageList(pages) {
-            const target = document.getElementById('wiki-page-list'); target.innerHTML = "";
-            if(pages.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>記事なし</p>"; return; }
-            pages.forEach(p => {
-                const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = p.title;
-                if(selectedPageId === p.id) div.classList.add('active');
-                div.onclick = () => selectWikiPage(p.id);
-                target.appendChild(div);
-            });
-        }
+          if (targetMode === 'wiki') {
+              if (w) w.style.display = 'block';
+              b.innerText = "WIKI";
+              loadWikiPages();
+          } else if (targetMode === 'event') {
+              if (e) e.style.display = 'block';
+              b.innerText = "EVENT";
+              loadEventPages();
+          } else if (targetMode === 'terms') {
+              if (t) t.style.display = 'block';
+              b.innerText = "TERMS";
+              window.scrollTo(0, 0);
+          } else if (targetMode === 'privacy') {
+              if (p) p.style.display = 'block';
+              b.innerText = "PRIVACY";
+              window.scrollTo(0, 0);
+          } else {
+              if (h) h.style.display = 'block';
+              b.innerText = "HOME";
+          }
+      }
 
-        document.getElementById('wiki-search').addEventListener('input', (e) => {
-            const k = e.target.value.toLowerCase();
-            renderPageList(currentPages.filter(p => p.title.toLowerCase().includes(k) || p.content.toLowerCase().includes(k)));
-        });
+              function parseWikiText(text) {
+                  if (!text) return "";
+                  let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                  html = html.replace(/```([\s\S]*?)```/g, '<div class="wiki-code-block">$1</div>');
+                  html = html.replace(/\[title:(.+?)\]([\s\S]*?)\[end\]/g, (m, t, b) => `<div class="wiki-separator" onclick="this.classList.toggle('open'); event.stopPropagation();"><div class="wiki-separator-title">${t}</div><div class="wiki-separator-body">${b}</div></div>`);
+                  html = html.replace(/\[img:(.+?)\]/g, '<img src="$1" alt="画像" loading="lazy">');
+                  html = html.replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>').replace(/\*([\s\S]+?)\*/g, '<em>$1</em>').replace(/~~([\s\S]+?)~~/g, '<del>$1</del>');
 
-        window.selectWikiPage = function(id) {
-            selectedPageId = id;
-            const page = currentPages.find(p => p.id === id);
-            if (!page) return;
+                  let lines = html.split('\n'), inList = false;
+                  for (let i = 0; i < lines.length; i++) {
+                      if (lines[i].trim().indexOf('* ') === 0) {
+                          let c = lines[i].replace(/^\s*\* /, '');
+                          lines[i] = !inList ? '<ul><li>' + c + '</li>' : '<li>' + c + '</li>';
+                          inList = true;
+                      } else {
+                          if (inList) { lines[i - 1] += '</ul>'; inList = false; }
+                          if (!lines[i].includes('</div>') && !lines[i].includes('</li>')) lines[i] += '<br>';
+                      }
+                  }
+                  if (inList) lines[lines.length - 1] += '</ul>';
+                  return lines.join('\n');
+              }
 
-            document.getElementById('wiki-title').innerText = page.title;
-            document.getElementById('wiki-author').innerText = `作成者: ${page.authorName || '不明'}`;
-            document.getElementById('wiki-content').innerHTML = parseWikiText(page.content);
-            
-            const editBtn = document.getElementById('btn-wiki-edit');
-            const lockMsg = document.getElementById('edit-lock-msg');
+              /* ==================== 既存のWIKI用処理 ==================== */
+              async function loadWikiPages() {
+                  const target = document.getElementById('wiki-page-list');
+                  target.innerHTML = "<p style='color:#888; font-size:14px;'>同期中...</p>";
+                  try {
+                      const q = query(collection(db, "menearth_wiki"), orderBy("title", "asc"));
+                      const snap = await getDocs(q);
+                      currentPages = [];
+                      snap.forEach(d => currentPages.push({ id: d.id, ...d.data() }));
+                      renderPageList(currentPages);
+                  } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
+              }
 
-            if (currentUser && page.uid === currentUser.uid) {
-                editBtn.style.display = 'inline-block';
-                lockMsg.style.display = 'none';
-            } else {
-                editBtn.style.display = 'none';
-                lockMsg.style.display = currentUser ? 'block' : 'none';
-            }
-            cancelEdit();
-        }
+              function renderPageList(pages) {
+                  const target = document.getElementById('wiki-page-list'); target.innerHTML = "";
+                  if(pages.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>記事なし</p>"; return; }
+                  pages.forEach(p => {
+                      const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = p.title;
+                      if(selectedPageId === p.id) div.classList.add('active');
+                      div.onclick = () => selectWikiPage(p.id);
+                      target.appendChild(div);
+                  });
+              }
 
-        window.prepareNewPage = function() {
-            selectedPageId = null;
-            document.getElementById('edit-wiki-title').value = "";
-            document.getElementById('edit-wiki-content').value = "";
-            document.getElementById('wiki-view-mode').style.display = 'none';
-            document.getElementById('wiki-edit-mode').style.display = 'block';
-        }
+              document.getElementById('wiki-search').addEventListener('input', (e) => {
+                  const k = e.target.value.toLowerCase();
+                  renderPageList(currentPages.filter(p => p.title.toLowerCase().includes(k) || p.content.toLowerCase().includes(k)));
+              });
 
-        window.enableEditMode = function() {
-            const page = currentPages.find(p => p.id === selectedPageId);
-            if (!page) return;
-            document.getElementById('edit-wiki-title').value = page.title;
-            document.getElementById('edit-wiki-content').value = page.content;
-            document.getElementById('wiki-view-mode').style.display = 'none';
-            document.getElementById('wiki-edit-mode').style.display = 'block';
-        }
+              window.selectWikiPage = function(id) {
+                  selectedPageId = id;
+                  const page = currentPages.find(p => p.id === id);
+                  if (!page) return;
 
-        window.cancelEdit = function() {
-            document.getElementById('wiki-view-mode').style.display = 'block';
-            document.getElementById('wiki-edit-mode').style.display = 'none';
-        }
+                  document.getElementById('wiki-title').innerText = page.title;
+                  document.getElementById('wiki-author').innerText = `作成者: ${page.authorName || '不明'}`;
+                  document.getElementById('wiki-content').innerHTML = parseWikiText(page.content);
 
-        window.saveWikiPage = async function() {
-            const title = document.getElementById('edit-wiki-title').value.trim();
-            const content = document.getElementById('edit-wiki-content').value.trim();
-            if (!title || !content) { alert("入力してください。"); return; }
-            if (!currentUser) { alert("ログインが必要です。"); return; }
+                  const editBtn = document.getElementById('btn-wiki-edit');
+                  const lockMsg = document.getElementById('edit-lock-msg');
 
-            try {
-                if (selectedPageId) {
-                    const page = currentPages.find(p => p.id === selectedPageId);
-                    if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
-                    await updateDoc(doc(db, "menearth_wiki", selectedPageId), { title, content });
-                } else {
-                    const docRef = await addDoc(collection(db, "menearth_wiki"), { 
-                        title, 
-                        content, 
-                        uid: currentUser.uid, 
-                        authorName: currentUser.displayName || '名無しプレイヤー'
-                    });
-                    selectedPageId = docRef.id;
-                }
-                await loadWikiPages();
-                selectWikiPage(selectedPageId);
-            } catch (error) { alert("保存に失敗しました。"); }
-        }
+                  if (currentUser && page.uid === currentUser.uid) {
+                      editBtn.style.display = 'inline-block';
+                      lockMsg.style.display = 'none';
+                  } else {
+                      editBtn.style.display = 'none';
+                      lockMsg.style.display = currentUser ? 'block' : 'none';
+                  }
+                  cancelEdit();
+              }
+
+              window.prepareNewPage = function() {
+                  selectedPageId = null;
+                  document.getElementById('edit-wiki-title').value = "";
+                  document.getElementById('edit-wiki-content').value = "";
+                  document.getElementById('wiki-view-mode').style.display = 'none';
+                  document.getElementById('wiki-edit-mode').style.display = 'block';
+              }
+
+              window.enableEditMode = function() {
+                  const page = currentPages.find(p => p.id === selectedPageId);
+                  if (!page) return;
+                  document.getElementById('edit-wiki-title').value = page.title;
+                  document.getElementById('edit-wiki-content').value = page.content;
+                  document.getElementById('wiki-view-mode').style.display = 'none';
+                  document.getElementById('wiki-edit-mode').style.display = 'block';
+              }
+
+              window.cancelEdit = function() {
+                  document.getElementById('wiki-view-mode').style.display = 'block';
+                  document.getElementById('wiki-edit-mode').style.display = 'none';
+              }
+
+              window.saveWikiPage = async function() {
+                  const title = document.getElementById('edit-wiki-title').value.trim();
+                  const content = document.getElementById('edit-wiki-content').value.trim();
+                  if (!title || !content) { alert("入力してください。"); return; }
+                  if (!currentUser) { alert("ログインが必要です。"); return; }
+
+                  try {
+                      if (selectedPageId) {
+                          const page = currentPages.find(p => p.id === selectedPageId);
+                          if(page.uid !== currentUser.uid) { alert("編集権限がありません。"); return; }
+                          await updateDoc(doc(db, "menearth_wiki", selectedPageId), { title, content });
+                      } else {
+                          const docRef = await addDoc(collection(db, "menearth_wiki"), {
+                              title,
+                              content,
+                              uid: currentUser.uid,
+                              authorName: currentUser.displayName || '名無しプレイヤー'
+                          });
+                          selectedPageId = docRef.id;
+                      }
+                      await loadWikiPages();
+                      selectWikiPage(selectedPageId);
+                  } catch (error) { alert("保存に失敗しました。"); }
+              }
 
 
-        /* ==================== 💡 追加: イベントページ用処理 ==================== */
-        
-        // 管理者かどうかの表示切り替え
-        function checkEventAdminPermission() {
-            const createEventBtn = document.getElementById('btn-create-event');
-            const adminHr = document.getElementById('event-admin-hr');
-            const editEventBtn = document.getElementById('btn-event-edit');
+              /* ==================== 💡 追加: イベントページ用処理 ==================== */
 
-            // ログイン中のメールアドレスが指定の管理者のものか判定
-            if (currentUser && currentUser.email === ADMIN_EMAIL) {
-                createEventBtn.style.display = 'block';
-                adminHr.style.display = 'block';
-                if (selectedEventId) editEventBtn.style.display = 'inline-block';
-            } else {
-                createEventBtn.style.display = 'none';
-                adminHr.style.display = 'none';
-                editEventBtn.style.display = 'none';
-            }
-        }
+              // 管理者かどうかの表示切り替え
+              function checkEventAdminPermission() {
+                  const createEventBtn = document.getElementById('btn-create-event');
+                  const adminHr = document.getElementById('event-admin-hr');
+                  const editEventBtn = document.getElementById('btn-event-edit');
 
-        // イベント一覧の読み込み
-        async function loadEventPages() {
-            const target = document.getElementById('event-list');
-            target.innerHTML = "<p style='color:#888; font-size:14px;'>イベント同期中...</p>";
-            try {
-                // コレクション「menearth_events」から取得
-                const q = query(collection(db, "menearth_events"), orderBy("title", "asc"));
-                const snap = await getDocs(q);
-                currentEvents = [];
-                snap.forEach(d => currentEvents.push({ id: d.id, ...d.data() }));
-                renderEventList(currentEvents);
-            } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
-        }
+                  // ログイン中のメールアドレスが指定の管理者のものか判定
+                  if (currentUser && currentUser.email === ADMIN_EMAIL) {
+                      createEventBtn.style.display = 'block';
+                      adminHr.style.display = 'block';
+                      if (selectedEventId) editEventBtn.style.display = 'inline-block';
+                  } else {
+                      createEventBtn.style.display = 'none';
+                      adminHr.style.display = 'none';
+                      editEventBtn.style.display = 'none';
+                  }
+              }
 
-        // イベント一覧のレンダリング
-        function renderEventList(events) {
-            const target = document.getElementById('event-list'); target.innerHTML = "";
-            if(events.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>現在予定されているイベントはありません</p>"; return; }
-            events.forEach(e => {
-                const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = e.title;
-                if(selectedEventId === e.id) div.classList.add('active');
-                div.onclick = () => selectEventPage(e.id);
-                target.appendChild(div);
-            });
-        }
+              // イベント一覧の読み込み
+              async function loadEventPages() {
+                  const target = document.getElementById('event-list');
+                  target.innerHTML = "<p style='color:#888; font-size:14px;'>イベント同期中...</p>";
+                  try {
+                      // コレクション「menearth_events」から取得
+                      const q = query(collection(db, "menearth_events"), orderBy("title", "asc"));
+                      const snap = await getDocs(q);
+                      currentEvents = [];
+                      snap.forEach(d => currentEvents.push({ id: d.id, ...d.data() }));
+                      renderEventList(currentEvents);
+                  } catch (e) { target.innerHTML = "<p style='color:#ff4444;'>同期失敗</p>"; }
+              }
 
-        // イベント詳細の選択
-        window.selectEventPage = function(id) {
-            selectedEventId = id;
-            const event = currentEvents.find(e => e.id === id);
-            if (!event) return;
+              // イベント一覧のレンダリング
+              function renderEventList(events) {
+                  const target = document.getElementById('event-list'); target.innerHTML = "";
+                  if(events.length === 0) { target.innerHTML = "<p style='color:#888; padding:10px; font-size:14px;'>現在予定されているイベントはありません</p>"; return; }
+                  events.forEach(e => {
+                      const div = document.createElement('div'); div.className = 'nav-item'; div.style.padding = '12px 20px'; div.innerText = e.title;
+                      if(selectedEventId === e.id) div.classList.add('active');
+                      div.onclick = () => selectEventPage(e.id);
+                      target.appendChild(div);
+                  });
+              }
 
-            document.getElementById('event-title').innerText = event.title;
-            document.getElementById('event-date').innerText = `📅 開催日時: ${event.date || '未定'}`;
-            document.getElementById('event-content').innerHTML = parseWikiText(event.content); // Wikiの装飾ルールを共通適用
-            
-            checkEventAdminPermission();
-            cancelEventEdit();
-        }
+              // イベント詳細の選択
+              window.selectEventPage = function(id) {
+                  selectedEventId = id;
+                  const event = currentEvents.find(e => e.id === id);
+                  if (!event) return;
 
-        // 新規イベント作成画面の準備
-        window.prepareNewEvent = function() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
-            selectedEventId = null;
-            document.getElementById('edit-event-title').value = "";
-            document.getElementById('edit-event-date').value = "";
-            document.getElementById('edit-event-content').value = "";
-            document.getElementById('event-view-mode').style.display = 'none';
-            document.getElementById('event-edit-mode').style.display = 'block';
-        }
+                  document.getElementById('event-title').innerText = event.title;
+                  document.getElementById('event-date').innerText = `📅 開催日時: ${event.date || '未定'}`;
+                  document.getElementById('event-content').innerHTML = parseWikiText(event.content); // Wikiの装飾ルールを共通適用
 
-        // イベント編集モードへ切り替え
-        window.enableEventEditMode = function() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
-            const event = currentEvents.find(e => e.id === selectedEventId);
-            if (!event) return;
-            document.getElementById('edit-event-title').value = event.title;
-            document.getElementById('edit-event-date').value = event.date || "";
-            document.getElementById('edit-event-content').value = event.content;
-            document.getElementById('event-view-mode').style.display = 'none';
-            document.getElementById('event-edit-mode').style.display = 'block';
-        }
+                  checkEventAdminPermission();
+                  cancelEventEdit();
+              }
 
-        // 編集キャンセル
-        window.cancelEventEdit = function() {
-            document.getElementById('event-view-mode').style.display = 'block';
-            document.getElementById('event-edit-mode').style.display = 'none';
-        }
+              // 新規イベント作成画面の準備
+              window.prepareNewEvent = function() {
+                  if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+                  selectedEventId = null;
+                  document.getElementById('edit-event-title').value = "";
+                  document.getElementById('edit-event-date').value = "";
+                  document.getElementById('edit-event-content').value = "";
+                  document.getElementById('event-view-mode').style.display = 'none';
+                  document.getElementById('event-edit-mode').style.display = 'block';
+              }
 
-        // イベント保存処理
-        window.saveEventPage = async function() {
-            if (!currentUser || currentUser.email !== ADMIN_EMAIL) { alert("権限がありません。"); return; }
-            
-            const title = document.getElementById('edit-event-title').value.trim();
-            const date = document.getElementById('edit-event-date').value.trim();
-            const content = document.getElementById('edit-event-content').value.trim();
-            
-            if (!title || !content) { alert("タイトルと本文を入力してください。"); return; }
+              // イベント編集モードへ切り替え
+              window.enableEventEditMode = function() {
+                  if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+                  const event = currentEvents.find(e => e.id === selectedEventId);
+                  if (!event) return;
+                  document.getElementById('edit-event-title').value = event.title;
+                  document.getElementById('edit-event-date').value = event.date || "";
+                  document.getElementById('edit-event-content').value = event.content;
+                  document.getElementById('event-view-mode').style.display = 'none';
+                  document.getElementById('event-edit-mode').style.display = 'block';
+              }
 
-            try {
-                if (selectedEventId) {
-                    // 既存編集
-                    await updateDoc(doc(db, "menearth_events", selectedEventId), { title, date, content });
-                } else {
-                    // 新規追加
-                    const docRef = await addDoc(collection(db, "menearth_events"), { 
-                        title, 
-                        date,
-                        content, 
-                        uid: currentUser.uid
-                    });
-                    selectedEventId = docRef.id;
-                }
-                await loadEventPages();
-                selectEventPage(selectedEventId);
-            } catch (error) { alert("イベントの保存に失敗しました。"); }
-        }
+              // 編集キャンセル
+              window.cancelEventEdit = function() {
+                  document.getElementById('event-view-mode').style.display = 'block';
+                  document.getElementById('event-edit-mode').style.display = 'none';
+              }
+
+              // イベント保存処理
+              window.saveEventPage = async function() {
+                  if (!currentUser || currentUser.email !== ADMIN_EMAIL) { alert("権限がありません。"); return; }
+
+                  const title = document.getElementById('edit-event-title').value.trim();
+                  const date = document.getElementById('edit-event-date').value.trim();
+                  const content = document.getElementById('edit-event-content').value.trim();
+
+                  if (!title || !content) { alert("タイトルと本文を入力してください。"); return; }
+
+                  try {
+                      if (selectedEventId) {
+                          // 既存編集
+                          await updateDoc(doc(db, "menearth_events", selectedEventId), { title, date, content });
+                      } else {
+                          // 新規追加
+                          const docRef = await addDoc(collection(db, "menearth_events"), {
+                              title,
+                              date,
+                              content,
+                              uid: currentUser.uid
+                          });
+                          selectedEventId = docRef.id;
+                      }
+                      await loadEventPages();
+                      selectEventPage(selectedEventId);
+                  } catch (error) { alert("イベントの保存に失敗しました。"); }
+              }
     </script>
-
     <script>
-        const features = [
-            { id: "search", name: "ディスコード", desc: "S3に初めてマップ機能が追加され、いろいろな国の状況がわかりやすくなりました。さらにディスコードではコミュニティー化されており、国の情報がわかりやすい" },
-            { id: "recipe", name: "運営", desc: "運営の対応速度は速く、プレイヤーのために尽力しています。" },
-            { id: "vote", name: "荒らし対策", desc: "荒らし行為をを報告すると、運営はすぐに対応します。また、マップを直してくれたりもしてくれます。" },
-            { id: "ui", name: "ほかのサーバーと違う点", desc: "大体のサーバーがマイクラバージョンが変わるごとに参加できなくなるが、このサーバーはちゃんと参加できる。" }
-        ];
-        function initFeatureNav() {
-            const nav = document.getElementById('nav-buttons');
-            features.forEach((f, index) => {
-                const div = document.createElement('div'); div.className = 'nav-item'; div.innerText = f.name;
-                div.onclick = () => updateDetail(index, div); nav.appendChild(div);
-                if(index === 0) updateDetail(0, div);
-            });
-        }
-        function updateDetail(index, el) {
-            const data = features[index];
-            document.querySelectorAll('#nav-buttons .nav-item').forEach(btn => btn.classList.remove('active'));
-            el.classList.add('active');
-            const content = document.getElementById('display-content');
-            document.getElementById('display-title').innerText = data.name;
-            document.getElementById('display-desc').innerText = data.desc;
-            content.classList.remove('fade-in'); void content.offsetWidth; content.classList.add('fade-in');
-        }
-        function renderView(mode) {
-            const target = document.getElementById('view-target'), bG = document.getElementById('btn-grid'), bL = document.getElementById('btn-list');
-            if(mode === 'grid') { bG.style.background = "#fff"; bG.style.color = "#000"; bL.style.background = "transparent"; bL.style.color = "var(--black)"; }
-            else { bL.style.background = "#fff"; bL.style.color = "#000"; bG.style.background = "transparent"; bG.style.color = "var(--black)"; }
-            let html = "";
-            if(mode === 'grid') {
-                html = '<div id="grid-container">';
-                features.forEach(f => html += `<div class="grid-box"><h3>${f.name}</h3></div>`);
-                html += '</div>';
-            } else {
-                html = '<div style="margin-top: 20px;">';
-                features.forEach(f => html += `<div class="list-box"><strong>${f.name}</strong><span>Active</span></div>`);
-                html += '</div>';
-            }
-            target.innerHTML = html;
-        }
+      const features = [
+          { id: "search", name: "ディスコード", desc: "S3に初めてマップ機能が追加され、いろいろな国の状況がわかりやすくなりました。さらにディスコードではコミュニティー化されており、国の情報がわかりやすい" },
+          { id: "recipe", name: "運営", desc: "運営の対応速度は速く、プレイヤーのために尽力しています。" },
+          { id: "vote", name: "荒らし対策", desc: "荒らし行為をを報告すると、運営はすぐに対応します。また、マップを直してくれたりもしてくれます。" },
+          { id: "ui", name: "ほかのサーバーと違う点", desc: "大体のサーバーがマイクラバージョンが変わるごとに参加できなくなるが、このサーバーはちゃんと参加できる。" }
+      ];
+      function initFeatureNav() {
+          const nav = document.getElementById('nav-buttons');
+          features.forEach((f, index) => {
+              const div = document.createElement('div'); div.className = 'nav-item'; div.innerText = f.name;
+              div.onclick = () => updateDetail(index, div); nav.appendChild(div);
+              if(index === 0) updateDetail(0, div);
+          });
+      }
+      function updateDetail(index, el) {
+          const data = features[index];
+          document.querySelectorAll('#nav-buttons .nav-item').forEach(btn => btn.classList.remove('active'));
+          el.classList.add('active');
+          const content = document.getElementById('display-content');
+          document.getElementById('display-title').innerText = data.name;
+          document.getElementById('display-desc').innerText = data.desc;
+          content.classList.remove('fade-in'); void content.offsetWidth; content.classList.add('fade-in');
+      }
+      function renderView(mode) {
+          const target = document.getElementById('view-target'), bG = document.getElementById('btn-grid'), bL = document.getElementById('btn-list');
+          if(mode === 'grid') { bG.style.background = "#fff"; bG.style.color = "#000"; bL.style.background = "transparent"; bL.style.color = "var(--black)"; }
+          else { bL.style.background = "#fff"; bL.style.color = "#000"; bG.style.background = "transparent"; bG.style.color = "var(--black)"; }
+          let html = "";
+          if(mode === 'grid') {
+              html = '<div id="grid-container">';
+              features.forEach(f => html += `<div class="grid-box"><h3>${f.name}</h3></div>`);
+              html += '</div>';
+          } else {
+              html = '<div style="margin-top: 20px;">';
+              features.forEach(f => html += `<div class="list-box"><strong>${f.name}</strong><span>Active</span></div>`);
+              html += '</div>';
+          }
+          target.innerHTML = html;
+      }
 
-        // 💡 サーバーの人数・ステータスを取得する処理を追加
-        async function fetchServerStatus() {
-            const serverIp = "men-earth.xgames.jp";
-            const serverPort = 19132;
-            const textElement = document.getElementById('server-player-count');
-            const indicator = document.getElementById('status-indicator');
+      // 💡 サーバーの人数・ステータスを取得する処理を追加
+      async function fetchServerStatus() {
+          const serverIp = "men-earth.xgames.jp";
+          const serverPort = 19132;
+          const textElement = document.getElementById('server-player-count');
+          const indicator = document.getElementById('status-indicator');
 
-            try {
-                // mcstatus.ioのBedrock(統合版)用APIを利用
-                const response = await fetch(`https://api.mcstatus.io/v2/status/bedrock/${serverIp}:${serverPort}`);
-                if (!response.ok) throw new Error('Network error');
-                
-                const data = await response.json();
+          try {
+              // mcstatus.ioのBedrock(統合版)用APIを利用
+              const response = await fetch(`https://api.mcstatus.io/v2/status/bedrock/${serverIp}:${serverPort}`);
+              if (!response.ok) throw new Error('Network error');
 
-                if (data.online) {
-                    const currentPlayers = data.players.online;
-                    const maxPlayers = data.players.max;
-                    textElement.innerText = `現在オンライン: ${currentPlayers} / ${maxPlayers} 人`;
-                    indicator.className = "status-dot online";
-                } else {
-                    textElement.innerText = "サーバーは現在オフラインです";
-                    indicator.className = "status-dot offline";
-                }
-            } catch (error) {
-                console.error("ステータスの取得に失敗しました:", error);
-                textElement.innerText = "人数情報の取得に失敗しました";
-                indicator.className = "status-dot";
-            }
-        }
+              const data = await response.json();
 
-        window.addEventListener('DOMContentLoaded', () => { 
-            initFeatureNav(); 
-            renderView('grid'); 
-            fetchServerStatus(); // 💡 初回読み込み時にサーバー人数を取得
-            setInterval(fetchServerStatus, 60000); // 💡 60秒ごとに自動更新
-        });
+              if (data.online) {
+                  const currentPlayers = data.players.online;
+                  const maxPlayers = data.players.max;
+                  textElement.innerText = `現在オンライン: ${currentPlayers} / ${maxPlayers} 人`;
+                  indicator.className = "status-dot online";
+              } else {
+                  textElement.innerText = "サーバーは現在オフラインです";
+                  indicator.className = "status-dot offline";
+              }
+          } catch (error) {
+              console.error("ステータスの取得に失敗しました:", error);
+              textElement.innerText = "人数情報の取得に失敗しました";
+              indicator.className = "status-dot";
+          }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+          initFeatureNav();
+          renderView('grid');
+          fetchServerStatus(); // 💡 初回読み込み時にサーバー人数を取得
+          setInterval(fetchServerStatus, 60000); // 💡 60秒ごとに自動更新
+      });
     </script>
-</body>
+  </body>
 </html>
